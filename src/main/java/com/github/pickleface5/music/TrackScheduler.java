@@ -4,17 +4,13 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-// 'Borrowed' from the lavaplayer JDA example ;)
 public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
     private final BlockingQueue<AudioTrack> queue;
-    private final Logger logger = LogManager.getLogger(this);
 
     public TrackScheduler(AudioPlayer player) {
         this.player = player;
@@ -26,9 +22,14 @@ public class TrackScheduler extends AudioEventAdapter {
         // something is playing, it returns false and does nothing. In that case the player was already playing so this
         // track goes to the queue instead.
         if (!player.startTrack(track, true)) {
-            logger.info("adding track to queue");
             queue.add(track);
         }
+    }
+
+    // Used for /purgequeue
+    // Clears the LinkedBlockingQueue<> (yes I know, insane)
+    public void clearQueue() {
+        queue.clear();
     }
 
     public void nextTrack() {

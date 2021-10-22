@@ -50,9 +50,12 @@ public class MusicUtils {
         return musicManager;
     }
 
-    public void loadAndPlay(final TextChannel channel, final String trackUrl) {
+    public void loadAndPlay(final TextChannel channel, String trackUrl) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
-
+        if (!trackUrl.startsWith("http")) {
+            trackUrl = ("ytsearch: " + trackUrl + "").toLowerCase();
+        }
+        final String finalTrackUrl = trackUrl;
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
@@ -76,7 +79,7 @@ public class MusicUtils {
 
             @Override
             public void noMatches() {
-                channel.sendMessage("Nothing found by " + trackUrl).queue();
+                channel.sendMessage("Nothing found by " + finalTrackUrl).queue();
             }
 
             @Override

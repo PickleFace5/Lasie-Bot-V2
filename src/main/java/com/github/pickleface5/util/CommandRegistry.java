@@ -27,6 +27,7 @@ public class CommandRegistry {
         registerSlashCommand(new CommandData("play", "Plays audio in your voice channel.")
                 .addOption(OptionType.STRING, "query", "The URL or query for your desired audio."), new PlayCommand());
         registerSlashCommand("forceskip", "Immediately skips the current track.", new ForceSkipCommand());
+        registerSlashCommand("purgequeue", "Purges the entire queue.", new PurgeQueueCommand());
         registerSlashCommand("pause", "Pauses the current song.", new PauseCommand());
         registerSlashCommand("resume", "Resumes the current song.", new ResumeCommand());
     }
