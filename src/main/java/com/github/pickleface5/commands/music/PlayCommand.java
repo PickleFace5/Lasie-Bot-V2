@@ -21,7 +21,7 @@ public class PlayCommand extends ListenerAdapter {
             event.getHook().sendMessage("You need to use this in a server!").queue();
             return;
         }
-        if (event.getOption("query") == null) {
+        if (event.getOption("search") == null) {
             event.getHook().sendMessage("You need to enter a URL!").queue();
             return;
         }
@@ -42,6 +42,6 @@ public class PlayCommand extends ListenerAdapter {
                 return;
             }
         }
-        new MusicUtils(MusicUtils.playerManager, MusicUtils.musicManagers).loadAndPlay(event.getTextChannel(), Objects.requireNonNull(event.getOption("query")).getAsString());
+        new MusicUtils(MusicUtils.playerManager, MusicUtils.musicManagers).loadAndPlay(event.getTextChannel(), Objects.requireNonNull(event.getOption("search")).getAsString());
     }
 }

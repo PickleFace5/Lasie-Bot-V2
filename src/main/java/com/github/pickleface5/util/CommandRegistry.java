@@ -21,11 +21,11 @@ public class CommandRegistry {
         registerSlashCommand("info", "Credits for Lasie Bot.", new InfoCommand());
         registerSlashCommand("members", "Returns a count of members in the server.", new MembersCommand());
         registerSlashCommand(new CommandData("apex", "Returns the stats of an Apex Legends player.")
-                .addOption(OptionType.STRING, "username", "Username of the Apex Legends player you want to look up."), new ApexCommand());
+                .addOption(OptionType.STRING, "username", "Username of the Apex Legends player you want to look up.", true), new ApexCommand());
         registerSlashCommand("join", "Joins your current voice channel.", new JoinCommand());
         registerSlashCommand("leave", "Leaves the voice channel the bot is connected to.", new LeaveCommand());
         registerSlashCommand(new CommandData("play", "Plays audio in your voice channel.")
-                .addOption(OptionType.STRING, "query", "The URL or query for your desired audio."), new PlayCommand());
+                .addOption(OptionType.STRING, "search", "The URL for your desired audio or the search result.", true), new PlayCommand());
         registerSlashCommand("forceskip", "Immediately skips the current track.", new ForceSkipCommand());
         registerSlashCommand("purgequeue", "Purges the entire queue.", new PurgeQueueCommand());
         registerSlashCommand("pause", "Pauses the current song.", new PauseCommand());
