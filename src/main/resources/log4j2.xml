@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false" pattern="%d{MMM dd yyyy HH:mm:ss:SSS} [%-5level] %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.github.pickleface5.Main" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="net.dv8tion.jda.internal" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="net.dv8tion.jda.api.utils" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.sedmelluq.discord.lavaplayer" level="ERROR" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <root level="TRACE">
+            <appender-ref ref="Console"/>
+        </root>
+    </Loggers>
+</Configuration>
