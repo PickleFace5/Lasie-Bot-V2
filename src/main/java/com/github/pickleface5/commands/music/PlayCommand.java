@@ -43,5 +43,6 @@ public class PlayCommand extends ListenerAdapter {
             }
         }
         new MusicUtils(MusicUtils.playerManager, MusicUtils.musicManagers).loadAndPlay(event.getTextChannel(), Objects.requireNonNull(event.getOption("search")).getAsString());
+        event.getHook().sendMessage(":white_check_mark:").queue();
     }
 }
