@@ -1,6 +1,5 @@
 package com.github.pickleface5;
 
-import com.github.pickleface5.music.VoiceChannelDisconnectIfAlone;
 import com.github.pickleface5.user.BotStatus;
 import com.github.pickleface5.util.CommandRegistry;
 import com.github.pickleface5.util.MusicUtils;
@@ -21,7 +20,6 @@ public class Main {
         try {
             JDA = JDABuilder.createDefault(System.getenv("BOT_TOKEN"))
                     .enableCache(CacheFlag.VOICE_STATE)
-                    .addEventListeners(new VoiceChannelDisconnectIfAlone())
                     .build()
                     .awaitReady();
         } catch (InterruptedException | LoginException e) {
