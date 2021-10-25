@@ -27,12 +27,14 @@ public class CommandRegistry {
         registerSlashCommand(new CommandData("play", "Plays audio in your voice channel.")
                 .addOption(OptionType.STRING, "search", "The URL for your desired audio or the search result.", true), new PlayCommand());
         registerSlashCommand("forceskip", "Immediately skips the current track.", new ForceSkipCommand());
+        registerSlashCommand("queue", "Shows the current music queue", new QueueCommand());
         registerSlashCommand("purgequeue", "Purges the entire queue.", new PurgeQueueCommand());
         registerSlashCommand("pause", "Pauses the current song.", new PauseCommand());
         registerSlashCommand("resume", "Resumes the current song.", new ResumeCommand());
     }
 
     // It's a bad idea to use the bots name, but it's okay since it will never get renamed. Ever.
+    // getGuildById("798332906614423563") sends the commands only to the debug guild, so I don't have to wait an hour.
     private static void registerSlashCommand(String name, String description, ListenerAdapter listener) {
         if (!Main.JDA.getSelfUser().getName().equals("Lasie Bot")) {
             Objects.requireNonNull(Main.JDA.getGuildById("798332906614423563")).upsertCommand(name, description).queue();

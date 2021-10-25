@@ -19,12 +19,8 @@ import java.util.Objects;
 
 
 public class ApexCommand extends ListenerAdapter {
-    private final String apexToken;
+    private final String apexToken = System.getenv("APEX_TOKEN");
     private static final Logger logger = LogManager.getLogger(ApexCommand.class);
-
-    public ApexCommand() {
-        this.apexToken = System.getenv("APEX_TOKEN");
-    }
 
     @Override
     public void onSlashCommand(SlashCommandEvent event) {

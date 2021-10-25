@@ -32,6 +32,10 @@ public class TrackScheduler extends AudioEventAdapter {
         queue.clear();
     }
 
+    public BlockingQueue<AudioTrack> getQueue() {
+        return this.queue;
+    }
+
     public void nextTrack() {
         // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
         // giving null to startTrack, which is a valid argument and will simply stop the player.

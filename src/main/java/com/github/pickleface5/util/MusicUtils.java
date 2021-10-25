@@ -91,17 +91,6 @@ public class MusicUtils {
     }
 
     public void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
-        connectToFirstVoiceChannel(guild.getAudioManager());
-
         musicManager.scheduler.queue(track);
-    }
-
-    public static void connectToFirstVoiceChannel(AudioManager audioManager) {
-        if (!audioManager.isConnected()) {
-            for (VoiceChannel voiceChannel : audioManager.getGuild().getVoiceChannels()) {
-                audioManager.openAudioConnection(voiceChannel);
-                break;
-            }
-        }
     }
 }
