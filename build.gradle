@@ -11,6 +11,8 @@ jar {
     }
 }
 
+mainClassName = "com.github.pickleface5.Main"
+
 group 'com.github.pickleface5'
 version '1.0-SNAPSHOT'
 
