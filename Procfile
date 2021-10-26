@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS com.github.pickleface5.Main.java
+web: java -cp target/classes/:target/dependency/* com.github.pickleface5.Main
