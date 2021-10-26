@@ -13,6 +13,16 @@ jar {
 
 mainClassName = "com.github.pickleface5.Main"
 
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
+
+task copyToLib(type: Copy) {
+    into "$buildDir/libs"
+    from(configurations.compile)
+}
+
+stage.dependsOn(copyToLib)
+
 group 'com.github.pickleface5'
 version '1.0-SNAPSHOT'
 
