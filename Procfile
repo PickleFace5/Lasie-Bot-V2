@@ -1,1 +1,1 @@
-worker: java -Dserver.port=$PORT $JAVA_OPTS -cp build/lib/dependencies/* -jar build/libs/*.jar
+worker: java -Dserver.port=$PORT $JAVA_OPTS -cp build/lib/dependencies/* com.github.pickleface5.Main
