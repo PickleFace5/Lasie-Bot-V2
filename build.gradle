@@ -11,25 +11,25 @@ jar {
     }
 }
 
-mainClassName = "com.github.pickleface5.Main"
-
-task stage(type: Copy, dependsOn: [clean, build]) {
-    from jar.archivePath
-    into project.rootDir
-    rename {
-        'app.jar'
-    }
+task copyToLib(type: Copy) {
+    into "$buildDir/libs"
+    from(configurations.compile)
 }
-stage.mustRunAfter(clean)
 
-clean {
-    doLast {
-        project.file('app.jar').delete()
-    }
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
+
+stage.dependsOn(copyToLib)
+
+gradle.taskGraph.whenReady {
+    taskGraph ->
+        if (taskGraph.hasTask(stage)) {
+            test.enabled = false
+        }
 }
 
 group 'com.github.pickleface5'
-version '1.0-SNAPSHOT'
+version '1.0.0'
 
 sourceCompatibility = 1.8
 
