@@ -15,7 +15,7 @@ jar {
 }
 
 task copyToLib(type: Copy) {
-    into "$buildDir/libs"
+    into "$buildDir/libs/dependencies"
     from(configurations.compile)
 }
 
