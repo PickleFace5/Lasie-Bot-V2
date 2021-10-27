@@ -14,12 +14,13 @@ jar {
     }
 }
 
-//task copyToLib(type: Copy) {
-    //into "$buildDir/libs"
-    //from(configurations.compile)
-//}
+task copyToLib(type: Copy) {
+    into "$buildDir/libs/dependencies"
+    from(configurations.compile)
+}
 
-task stage(dependsOn: ['build', 'clean'])
+task stage(dependsOn: ['copyToLib', 'build', 'clean'])
+copyToLib.mustRunAfter build
 build.mustRunAfter clean
 
 gradle.taskGraph.whenReady {
