@@ -17,13 +17,6 @@ jar {
 task stage(dependsOn: ['build', 'clean'])
 build.mustRunAfter clean
 
-gradle.taskGraph.whenReady {
-    taskGraph ->
-        if (taskGraph.hasTask(stage)) {
-            test.enabled = false
-        }
-}
-
 group 'com.github.pickleface5'
 version '1.0.0'
 
