@@ -18,6 +18,9 @@
         <Logger name="com.sedmelluq.discord.lavaplayer" level="ERROR" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
+        <Logger name="com.sedmelluq.lava.common.natives" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
         <root level="TRACE">
             <appender-ref ref="Console"/>
         </root>
