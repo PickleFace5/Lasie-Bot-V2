@@ -24,6 +24,7 @@ public class VoiceChannelDisconnectIfAlone extends ListenerAdapter {
         if (voiceChannel.getMembers().size() <= 1 && voiceChannel.getMembers().get(0).getUser().getId().equals(Main.BOT_USER_ID)) {
             MusicUtils.getGuildAudioPlayer(voiceChannel.getGuild()).scheduler.clearQueue();
             MusicUtils.getGuildAudioPlayer(voiceChannel.getGuild()).player.destroy();
+            voiceChannel.getGuild().getAudioManager().closeAudioConnection();
         }
     }
 
