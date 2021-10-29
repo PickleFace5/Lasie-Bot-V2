@@ -1,17 +1,20 @@
 plugins {
-    id 'java'
+    id 'com.github.johnrengelman.shadow' version '6.0.0'
     id 'application'
+    id 'java'
 }
 
 jar {
     manifest {
         attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
                 'Main-Class': 'com.github.pickleface5.Main'
         )
     }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+}
+
+shadowJar {
+    archiveClassifier.set('')
 }
 
 task stage(dependsOn: ['build', 'clean'])
@@ -20,6 +23,7 @@ build.mustRunAfter clean
 group 'com.github.pickleface5'
 version '1.0.0'
 
+mainClassName = 'com.github.pickleface5.Main'
 sourceCompatibility = 1.8
 
 repositories {
@@ -29,10 +33,6 @@ repositories {
     }
     maven {
         url 'https://repo1.maven.org/maven2/org/slf4j/slf4j-api/'
-    }
-    maven {
-        name 'm2-dv8tion'
-        url 'https://m2.dv8tion.net/releases'
     }
 }
 
