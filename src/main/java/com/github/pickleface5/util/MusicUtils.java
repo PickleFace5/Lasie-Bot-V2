@@ -8,18 +8,21 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.managers.AudioManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MusicUtils {
     public static Map<Long, GuildMusicManager> musicManagers;
     public static AudioPlayerManager playerManager;
+    final String youTubeUrlRegEx = "^(https?)?(://)?(www.)?(m.)?((youtube.com)|(youtu.be))/";
+    final String[] videoIdRegex = { "\\?vi?=([^&]*)","watch\\?.*v=([^&]*)", "(?:embed|vi?)/([^/?]*)", "^([A-Za-z0-9\\-]*)"};
     Logger logger = LogManager.getLogger(this);
 
     public MusicUtils(AudioPlayerManager playerManager, Map<Long, GuildMusicManager> musicManagers) {
@@ -50,7 +53,7 @@ public class MusicUtils {
         return musicManager;
     }
 
-    public void loadAndPlay(final TextChannel channel, String trackUrl) {
+    public void loadAndPlay(final TextChannel channel, String trackUrl, User user) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         if (!trackUrl.startsWith("http")) {
             trackUrl = ("ytsearch: " + trackUrl + "").toLowerCase();
@@ -59,9 +62,15 @@ public class MusicUtils {
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                channel.sendMessage("Adding to queue " + track.getInfo().title).queue();
+                channel.sendMessageEmbeds(new EmbedBuilder()
+                        .setColor(EmbedUtils.EMBED_COLOR)
+                        .setTitle("Adding to queue")
+                        .setDescription("[" + track.getInfo().title + "](" + track.getInfo().uri + ")")
+                        .setThumbnail("https://img.youtube.com/vi/" + extractVideoIdFromUrl(track.getInfo().uri) + "/mqdefault.jpg")
+                        .setFooter("Added by " + user.getName(), user.getAvatarUrl())
+                        .build()).queue();
 
-                play(channel.getGuild(), musicManager, track);
+                play(musicManager, track);
             }
 
             @Override
@@ -72,9 +81,15 @@ public class MusicUtils {
                     firstTrack = playlist.getTracks().get(0);
                 }
 
-                channel.sendMessage("Adding to queue " + firstTrack.getInfo().title + " (first track of playlist " + playlist.getName() + ")").queue();
+                channel.sendMessageEmbeds(new EmbedBuilder()
+                        .setColor(EmbedUtils.EMBED_COLOR)
+                        .setTitle("Adding to queue")
+                        .setDescription("[" + firstTrack.getInfo().title + "](" + firstTrack.getInfo().uri + ")")
+                        .setThumbnail("https://img.youtube.com/vi/" + extractVideoIdFromUrl(firstTrack.getInfo().uri) + "/mqdefault.jpg")
+                        .setFooter("Added by " + user.getName(), user.getAvatarUrl())
+                        .build()).queue();
 
-                play(channel.getGuild(), musicManager, firstTrack);
+                play(musicManager, firstTrack);
             }
 
             @Override
@@ -90,7 +105,32 @@ public class MusicUtils {
         });
     }
 
-    public void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
+    public void play(GuildMusicManager musicManager, AudioTrack track) {
         musicManager.scheduler.queue(track);
+    }
+
+    public String extractVideoIdFromUrl(String url) {
+        String youTubeLinkWithoutProtocolAndDomain = youTubeLinkWithoutProtocolAndDomain(url);
+
+        for(String regex : videoIdRegex) {
+            Pattern compiledPattern = Pattern.compile(regex);
+            Matcher matcher = compiledPattern.matcher(youTubeLinkWithoutProtocolAndDomain);
+
+            if(matcher.find()){
+                return matcher.group(1);
+            }
+        }
+
+        return null;
+    }
+
+    private String youTubeLinkWithoutProtocolAndDomain(String url) {
+        Pattern compiledPattern = Pattern.compile(youTubeUrlRegEx);
+        Matcher matcher = compiledPattern.matcher(url);
+
+        if(matcher.find()){
+            return url.replace(matcher.group(), "");
+        }
+        return url;
     }
 }

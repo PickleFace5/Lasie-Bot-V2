@@ -42,7 +42,7 @@ public class PlayCommand extends ListenerAdapter {
                 return;
             }
         }
-        new MusicUtils(MusicUtils.playerManager, MusicUtils.musicManagers).loadAndPlay(event.getTextChannel(), Objects.requireNonNull(event.getOption("search")).getAsString());
+        new MusicUtils(MusicUtils.playerManager, MusicUtils.musicManagers).loadAndPlay(event.getTextChannel(), Objects.requireNonNull(event.getOption("search")).getAsString(), event.getUser());
         event.getHook().sendMessage(":white_check_mark:").queue();
     }
 }
