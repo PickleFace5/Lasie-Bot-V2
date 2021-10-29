@@ -1,6 +1,7 @@
 package com.github.pickleface5.music;
 
 import com.github.pickleface5.Main;
+import com.github.pickleface5.util.MusicUtils;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
@@ -21,7 +22,10 @@ public class VoiceChannelDisconnectIfAlone extends ListenerAdapter {
     private void leaveIfAlone(VoiceChannel voiceChannel) {
         if (voiceChannel.getMembers().isEmpty()) return;
         if (voiceChannel.getMembers().size() <= 1 && voiceChannel.getMembers().get(0).getUser().getId().equals(Main.BOT_USER_ID)) {
-            voiceChannel.getGuild().getAudioManager().closeAudioConnection();
+            MusicUtils.getGuildAudioPlayer(voiceChannel.getGuild()).scheduler.clearQueue();
+            MusicUtils.getGuildAudioPlayer(voiceChannel.getGuild()).player.destroy();
         }
     }
+
+
 }
