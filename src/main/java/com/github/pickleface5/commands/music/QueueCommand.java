@@ -1,5 +1,6 @@
 package com.github.pickleface5.commands.music;
 
+import com.github.pickleface5.music.GuildMusicManager;
 import com.github.pickleface5.util.EmbedUtils;
 import com.github.pickleface5.util.MusicUtils;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -21,7 +22,8 @@ public class QueueCommand extends ListenerAdapter {
             return;
         }
         Guild guild = event.getGuild();
-        BlockingQueue<AudioTrack> guildQueue = MusicUtils.getGuildAudioPlayer(guild).scheduler.getQueue();
+        GuildMusicManager guildMusicManager = MusicUtils.getGuildAudioPlayer(guild);
+        BlockingQueue<AudioTrack> guildQueue = guildMusicManager.scheduler.getQueue();
         if (guildQueue.size() == 0) {
             event.reply("There's nothing in the queue!").queue();
             return;
@@ -31,7 +33,7 @@ public class QueueCommand extends ListenerAdapter {
                 .setTitle("Music Queue (" + guildQueue.size() + " tracks)");
         for (int i = 0; i < guildQueue.size(); i++) {
             Object[] audioTrack = guildQueue.toArray();
-            if (audioTrack[i] instanceof DelegatedAudioTrack && i == 0) messageEmbed.addField("Now Playing", "[" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().title + "](" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + ")", false);
+            if (i == 0) messageEmbed.addField("Now Playing", "[" + guildMusicManager.player.getPlayingTrack().getInfo().title + "](" + guildMusicManager.player.getPlayingTrack().getInfo().uri + ")", false);
             else if (audioTrack[i] instanceof DelegatedAudioTrack) messageEmbed.addField("#" + (i + 1), "[" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().title + "](" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + ")", false);
             else messageEmbed.addField("Unknown Error", "Unknown Error", false);
         }
