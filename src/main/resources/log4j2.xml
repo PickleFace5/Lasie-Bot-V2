@@ -21,7 +21,7 @@
         <Logger name="com.sedmelluq.lava.common.natives" level="WARN" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Logger name="com.dv8tion.jda.api.JDA" level="WARN" additivity="false">
+        <Logger name="net.dv8tion.jda.api.JDA" level="WARN" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <root level="TRACE">
