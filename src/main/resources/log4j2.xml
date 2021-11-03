@@ -2,7 +2,7 @@
 <Configuration status="INFO">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout disableAnsi="false" pattern="%d{MMM dd yyyy HH:mm:ss:SSS} [%-5level] %logger{36} - %msg%n"/>
+            <PatternLayout pattern="%-5level %logger{36} - %msg%n"/>
         </Console>
     </Appenders>
     <Loggers>
@@ -19,6 +19,9 @@
             <AppenderRef ref="Console"/>
         </Logger>
         <Logger name="com.sedmelluq.lava.common.natives" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="net.dv8tion.jda.api.JDA" level="WARN" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <root level="TRACE">
