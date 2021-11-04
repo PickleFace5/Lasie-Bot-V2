@@ -33,7 +33,7 @@ public class QueueCommand extends ListenerAdapter {
                 .setTitle("Music Queue (" + guildQueue.size() + " tracks)");
         for (int i = 0; i < guildQueue.size(); i++) {
             Object[] audioTrack = guildQueue.toArray();
-            if (i == 0) messageEmbed.addField("Now Playing", "[" + guildMusicManager.player.getPlayingTrack().getInfo().title + "](" + guildMusicManager.player.getPlayingTrack().getInfo().uri + ")", false);
+            if (i == 0 && guildMusicManager.player.getPlayingTrack() != null) messageEmbed.addField("Now Playing", "[" + guildMusicManager.player.getPlayingTrack().getInfo().title + "](" + guildMusicManager.player.getPlayingTrack().getInfo().uri + ")", false);
             else if (audioTrack[i] instanceof DelegatedAudioTrack) messageEmbed.addField("#" + (i + 1), "[" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().title + "](" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + ")", false);
             else messageEmbed.addField("Unknown Error", "Unknown Error", false);
         }
