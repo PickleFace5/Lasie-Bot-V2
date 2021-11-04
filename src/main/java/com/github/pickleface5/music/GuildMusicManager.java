@@ -29,4 +29,8 @@ public class GuildMusicManager {
     public AudioPlayerSendHandler getSendHandler() {
         return new AudioPlayerSendHandler(player);
     }
+
+    public TrackScheduler getTrackScheduler() {
+        return scheduler;
+    }
 }

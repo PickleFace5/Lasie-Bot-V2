@@ -31,6 +31,7 @@ public class CommandRegistry {
         registerSlashCommand("purgequeue", "Purges the entire queue.", new PurgeQueueCommand());
         registerSlashCommand("pause", "Pauses the current song.", new PauseCommand());
         registerSlashCommand("resume", "Resumes the current song.", new ResumeCommand());
+        registerSlashCommand("loop", "Toggles looping the current track.", new LoopCommand());
     }
 
     // It's a bad idea to use the bots name, but it's okay since it will never get renamed. Ever.
