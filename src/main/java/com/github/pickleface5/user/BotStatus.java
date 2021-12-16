@@ -22,7 +22,8 @@ public class BotStatus {
             "Satisfactory", "Spore", "Stick Fight: The Game", "UNDERTALE", "Stardew Valley",
             "Ori and the Will of the Wisps", "RUST", "Ori and the Blind Forest", "Titanfall", "Tic Tac Toe",
             "Subnautica", "Subnautica: Below Zero", "Pikuniku", "Cyberpunk 2077", "osu!", "Universe Sandbox",
-            "PowerWash Simulator", "Muck", "Bloons Tower Defense 6", "Cookie Clicker"};
+            "PowerWash Simulator", "Muck", "Bloons Tower Defense 6", "Cookie Clicker", "Omori", "Don't Starve",
+            "Don't Starve Together", "OneShot", "DELTARUNE"};
 
     private static final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
