@@ -2,6 +2,7 @@ package com.github.pickleface5.util;
 
 import com.github.pickleface5.Main;
 import com.github.pickleface5.commands.*;
+import com.github.pickleface5.commands.imageing.ChadPfpCommand;
 import com.github.pickleface5.commands.music.*;
 import com.github.pickleface5.music.VoiceChannelDisconnectIfAlone;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -10,6 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class CommandRegistry {
@@ -33,6 +35,12 @@ public class CommandRegistry {
         registerSlashCommand("resume", "Resumes the current song.", new ResumeCommand());
         registerSlashCommand("loop", "Toggles looping the current track.", new LoopCommand());
         registerSlashCommand("skip", "Allows you to skip the song when your alone in voice.", new SkipCommand());
+        try {
+            registerSlashCommand(new CommandData("chad", "Turns you into a gigachad.")
+                    .addOption(OptionType.USER, "user", "The user to want to make a **king**", false), new ChadPfpCommand());
+        } catch (IOException e) {
+            LOGGER.error("chad could not be registered: IOException returned.");
+        }
     }
 
     // It's a bad idea to use the bots name, but it's okay since it will never get renamed. Ever.
