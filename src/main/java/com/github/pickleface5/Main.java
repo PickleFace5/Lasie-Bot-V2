@@ -11,6 +11,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
+import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Main {
@@ -37,5 +39,9 @@ public class Main {
 
         BotStatus.activateBotActivityRoutine();
         logger.info("Finished loading {} on shard {}!", JDA.getSelfUser().getName(), JDA.getShardInfo().getShardId() + 1);
+        File debugFile = new File(".");
+        for (int i = 0; i < debugFile.listFiles().length; i++) {
+            logger.info(Arrays.stream(debugFile.listFiles()).toArray()[i]);
+        }
     }
 }

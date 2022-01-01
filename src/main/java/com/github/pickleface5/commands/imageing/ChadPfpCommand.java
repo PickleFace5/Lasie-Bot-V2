@@ -43,9 +43,8 @@ public class ChadPfpCommand extends ListenerAdapter {
         }
         event.deferReply().queue();
         Graphics2D newImg = gigachad.createGraphics();
-        File authorPfpButDifferent = Unirest.get(user.getAvatarUrl()).asFile("src/main/resources/temp/" + user.getId() + ".png", StandardCopyOption.REPLACE_EXISTING).getBody();
         try {
-            BufferedImage authorPfp = ImageIO.read(authorPfpButDifferent);
+            BufferedImage authorPfp = ImageIO.read(Unirest.get(user.getAvatarUrl()).asFile("src/main/resources/temp/" + user.getId() + ".png", StandardCopyOption.REPLACE_EXISTING).getBody());
             newImg.drawImage(authorPfp, 170, 61, null);
             ImageIO.write(gigachad, "png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
         } catch (IOException | NullPointerException e) {
