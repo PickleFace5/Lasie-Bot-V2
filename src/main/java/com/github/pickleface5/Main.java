@@ -40,6 +40,7 @@ public class Main {
             if (TEMP_DIRECTORY.mkdirs()) // Returns a boolean, but this has a very low chance of returning false, sooo...
                 logger.info("Temp Directory created.");
         }
+        logger.info("Current temp path: {}", Main.TEMP_DIRECTORY.getAbsolutePath());
 
         new MusicUtils(new DefaultAudioPlayerManager(), new HashMap<>());
 
