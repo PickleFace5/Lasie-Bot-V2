@@ -39,9 +39,5 @@ public class Main {
 
         BotStatus.activateBotActivityRoutine();
         logger.info("Finished loading {} on shard {}!", JDA.getSelfUser().getName(), JDA.getShardInfo().getShardId() + 1);
-        File debugFile = new File(".");
-        for (int i = 0; i < debugFile.listFiles().length; i++) {
-            logger.info(Arrays.stream(debugFile.listFiles()).toArray()[i]);
-        }
     }
 }

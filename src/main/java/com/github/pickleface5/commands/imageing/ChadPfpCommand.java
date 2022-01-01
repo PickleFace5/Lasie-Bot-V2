@@ -56,7 +56,7 @@ public class ChadPfpCommand extends ListenerAdapter {
                 e.printStackTrace();
                 return;
             }
-            BufferedImage img = null;
+            BufferedImage img;
             try {
                 InputStream in = new BufferedInputStream(openConnection.getInputStream());
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -70,8 +70,9 @@ public class ChadPfpCommand extends ListenerAdapter {
                 byte[] response = out.toByteArray();
                 img = ImageIO.read(new ByteArrayInputStream(response));
             } catch (Exception e) {
-                System.out.println("I couldn't read an image from this link. The issue will be fixed soon.");
+                event.getHook().sendMessage("I couldn't read an image from this link. The issue will be fixed soon.").queue();
                 e.printStackTrace();
+                return;
             }
             File authorPfp = new File("src/main/resources/temp/" + user.getId() + ".png");
             try {
@@ -80,11 +81,12 @@ public class ChadPfpCommand extends ListenerAdapter {
                 assert img != null;
                 writer.write(null, new IIOImage(img, null, null), null);
             } catch (IOException e) {
-                System.out.println("Couldn't create/send the output image.");
+                event.getHook().sendMessage("Couldn't create/send the output image.").queue();
                 e.printStackTrace();
+                return;
             }
             Graphics2D newImg = gigachad.createGraphics();
-            newImg.drawImage(ImageIO.read(authorPfp), 170, 61, null);
+            newImg.drawImage(img, 170, 61, null);
             ImageIO.write(gigachad, "png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
         } catch (IOException | NullPointerException e) {
             event.getHook().sendMessage("There was an error while downloading your profile photo! " +
