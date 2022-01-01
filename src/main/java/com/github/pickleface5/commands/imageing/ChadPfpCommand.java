@@ -46,7 +46,7 @@ public class ChadPfpCommand extends ListenerAdapter {
         try {
             BufferedImage authorPfp = ImageIO.read(new File("src/main/resources/temp/" + user.getId() + ".png"));
             if (newImg.drawImage(authorPfp, 170, 61, null))
-                ImageIO.write(gigachad, "png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
+                ImageIO.write(gigachad, ".png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
         } catch (IOException e) {
             event.getHook().sendMessage("There was an error while downloading your profile photo!").queue();
             return;
