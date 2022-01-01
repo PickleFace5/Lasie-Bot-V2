@@ -15,7 +15,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
@@ -46,7 +45,7 @@ public class ChadPfpCommand extends ListenerAdapter {
         File authorPfpButDifferent = Unirest.get(user.getAvatarUrl()).asFile("src/main/resources/temp/" + user.getId() + ".png", StandardCopyOption.REPLACE_EXISTING).getBody();
         try {
             BufferedImage authorPfp = ImageIO.read(authorPfpButDifferent);
-            logger.info(new File("src/main/resources/temp/" + user.getId() + ".png").getAbsolutePath());
+            logger.trace(new File("src/main/resources/temp/" + user.getId() + ".png").getAbsolutePath());
             newImg.drawImage(authorPfp, 170, 61, null);
             ImageIO.write(gigachad, "png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
         } catch (IOException | NullPointerException e) {
