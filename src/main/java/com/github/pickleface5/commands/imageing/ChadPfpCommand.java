@@ -49,6 +49,7 @@ public class ChadPfpCommand extends ListenerAdapter {
                 ImageIO.write(gigachad, ".png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
         } catch (IOException e) {
             event.getHook().sendMessage("There was an error while downloading your profile photo!").queue();
+            e.printStackTrace();
             return;
         }
         EmbedBuilder embed = new EmbedBuilder();
