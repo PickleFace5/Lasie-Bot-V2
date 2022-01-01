@@ -31,7 +31,7 @@ public class ChadPfpCommand extends ListenerAdapter {
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
         if (!(event.getName().equals("chad"))) return;
-        logger.info(new File(".").getAbsolutePath());
+        logger.trace(new File(".").getAbsolutePath());
         User user;
         try {
             user = Objects.requireNonNull(event.getOption("user")).getAsUser();
@@ -86,7 +86,7 @@ public class ChadPfpCommand extends ListenerAdapter {
                 return;
             }
             Graphics2D newImg = gigachad.createGraphics();
-            newImg.drawImage(img, 170, 61, null);
+            newImg.drawImage(ImageIO.read(new File("src/main/resources/temp/" + user.getId() + ".png")), 170, 61, null);
             ImageIO.write(gigachad, "png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
         } catch (IOException | NullPointerException e) {
             event.getHook().sendMessage("There was an error while downloading your profile photo! " +
