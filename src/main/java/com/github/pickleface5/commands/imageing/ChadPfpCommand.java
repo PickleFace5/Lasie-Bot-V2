@@ -86,7 +86,7 @@ public class ChadPfpCommand extends ListenerAdapter {
                 return;
             }
             Graphics2D newImg = gigachad.createGraphics();
-            newImg.drawImage(ImageIO.read(new File("src/main/resources/temp/" + user.getId() + ".png")), 170, 61, null);
+            newImg.drawImage(ImageIO.read(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("src/main/resources/temp/" + user.getId() + ".png"))), 170, 61, null);
             ImageIO.write(gigachad, "png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
         } catch (IOException | NullPointerException e) {
             event.getHook().sendMessage("There was an error while downloading your profile photo! " +
