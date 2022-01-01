@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
@@ -42,12 +43,13 @@ public class ChadPfpCommand extends ListenerAdapter {
         }
         event.deferReply().queue();
         Graphics2D newImg = gigachad.createGraphics();
-        Unirest.get(user.getAvatarUrl()).asFile("src/main/resources/temp/" + user.getId() + ".png", StandardCopyOption.REPLACE_EXISTING);
+        File authorPfpButDifferent = Unirest.get(user.getAvatarUrl()).asFile("src/main/resources/temp/" + user.getId() + ".png", StandardCopyOption.REPLACE_EXISTING).getBody();
         try {
-            BufferedImage authorPfp = ImageIO.read(new File("src/main/resources/temp/" + user.getId() + ".png"));
-            if (newImg.drawImage(authorPfp, 170, 61, null))
-                ImageIO.write(gigachad, ".png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
-        } catch (IOException e) {
+            BufferedImage authorPfp = ImageIO.read(authorPfpButDifferent);
+            logger.info(new File("src/main/resources/temp/" + user.getId() + ".png").getAbsolutePath());
+            newImg.drawImage(authorPfp, 170, 61, null);
+            ImageIO.write(gigachad, "png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
+        } catch (IOException | NullPointerException e) {
             event.getHook().sendMessage("There was an error while downloading your profile photo!").queue();
             e.printStackTrace();
             return;
