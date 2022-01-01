@@ -29,6 +29,7 @@ public class ChadPfpCommand extends ListenerAdapter {
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
         if (!(event.getName().equals("chad"))) return;
+        logger.info(new File(".").getAbsolutePath());
         User user;
         try {
             user = Objects.requireNonNull(event.getOption("user")).getAsUser();
@@ -45,7 +46,6 @@ public class ChadPfpCommand extends ListenerAdapter {
         File authorPfpButDifferent = Unirest.get(user.getAvatarUrl()).asFile("src/main/resources/temp/" + user.getId() + ".png", StandardCopyOption.REPLACE_EXISTING).getBody();
         try {
             BufferedImage authorPfp = ImageIO.read(authorPfpButDifferent);
-            logger.trace(new File("src/main/resources/temp/" + user.getId() + ".png").getAbsolutePath());
             newImg.drawImage(authorPfp, 170, 61, null);
             ImageIO.write(gigachad, "png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
         } catch (IOException | NullPointerException e) {
