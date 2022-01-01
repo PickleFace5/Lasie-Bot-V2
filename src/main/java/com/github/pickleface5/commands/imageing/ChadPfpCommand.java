@@ -1,5 +1,6 @@
 package com.github.pickleface5.commands.imageing;
 
+import com.github.pickleface5.Main;
 import com.github.pickleface5.util.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
@@ -25,7 +26,8 @@ public class ChadPfpCommand extends ListenerAdapter {
     BufferedImage gigachad;
 
     public ChadPfpCommand() throws IOException {
-        gigachad = ImageIO.read(new File("src/main/resources/imaging/chad/gigachad.png"));
+        //gigachad = ImageIO.read(new File("src/main/resources/imaging/chad/gigachad.png"));
+        gigachad = ImageIO.read(Objects.requireNonNull(this.getClass().getClassLoader().getResource("imaging/chad/gigachad.png")));
     }
 
     @Override
@@ -74,7 +76,7 @@ public class ChadPfpCommand extends ListenerAdapter {
                 e.printStackTrace();
                 return;
             }
-            File authorPfp = new File("src/main/resources/temp/" + user.getId() + ".png");
+            File authorPfp = new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + user.getId() + ".png");
             try {
                 final ImageWriter writer = ImageIO.getImageWritersByFormatName("png").next();
                 writer.setOutput(new FileImageOutputStream(authorPfp));
@@ -86,8 +88,8 @@ public class ChadPfpCommand extends ListenerAdapter {
                 return;
             }
             Graphics2D newImg = gigachad.createGraphics();
-            newImg.drawImage(ImageIO.read(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("src/main/resources/temp/" + user.getId() + ".png"))), 170, 61, null);
-            ImageIO.write(gigachad, "png", new File("src/main/resources/temp/" + user.getId() + "_final.png"));
+            newImg.drawImage(ImageIO.read(Objects.requireNonNull(this.getClass().getClassLoader().getResource("temp/" + user.getId() + ".png"))), 170, 61, null);
+            ImageIO.write(gigachad, "png", new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + user.getId() + "_final.png"));
         } catch (IOException | NullPointerException e) {
             event.getHook().sendMessage("There was an error while downloading your profile photo! " +
                     "Make sure you have a custom profile photo, not an discord profile photo. If it *still* doesn't " +
@@ -102,7 +104,7 @@ public class ChadPfpCommand extends ListenerAdapter {
                         .setColor(EmbedUtils.EMBED_COLOR)
                         .setFooter("'Absolute chad.'")
                         .build())
-                .addFile(new File("src/main/resources/temp/" + user.getId() + "_final.png"), "gigachad.png")
+                .addFile(new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + user.getId() + "_final.png"), "gigachad.png")
                 .queue();
     }
 }

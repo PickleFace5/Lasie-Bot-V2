@@ -12,12 +12,13 @@ import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
     public static JDA JDA = null;
+    public static final File TEMP_DIRECTORY = new File(new File(System.getProperty("java.io.tmpdir")), "files");
+
     static {
         try {
             JDA = JDABuilder.createDefault(System.getenv("BOT_TOKEN"))
@@ -32,6 +33,13 @@ public class Main {
 
     public static void main(String[] args) {
         logger.traceEntry();
+
+        if (TEMP_DIRECTORY.exists()) {
+            logger.info("Temp Directory exists.");
+        } else {
+            if (TEMP_DIRECTORY.mkdirs()) // Returns a boolean, but this has a very low chance of returning false, sooo...
+                logger.info("Temp Directory created.");
+        }
 
         new MusicUtils(new DefaultAudioPlayerManager(), new HashMap<>());
 
