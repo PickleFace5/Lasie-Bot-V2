@@ -4,6 +4,7 @@ import com.github.pickleface5.Main;
 import com.github.pickleface5.commands.*;
 import com.github.pickleface5.commands.imaging.AbstractCommand;
 import com.github.pickleface5.commands.imaging.ChadPfpCommand;
+import com.github.pickleface5.commands.imaging.PfpGrabberCommand;
 import com.github.pickleface5.commands.music.*;
 import com.github.pickleface5.music.VoiceChannelDisconnectIfAlone;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -43,6 +44,8 @@ public class CommandRegistry {
             LOGGER.error("chad could not be registered: IOException returned.");
         }
         registerSlashCommand("abstract", "Creates randomly generated abstract art.", new AbstractCommand());
+        registerSlashCommand(new CommandData("pfpgrabber", "Grabs a users profile photo.")
+                .addOption(OptionType.USER, "user", "The user profile photo you want to grab."), new PfpGrabberCommand());
     }
 
     // It's a bad idea to use the bots name, but it's okay since it will never get renamed. Ever.
