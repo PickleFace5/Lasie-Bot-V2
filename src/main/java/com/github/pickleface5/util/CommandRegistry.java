@@ -2,7 +2,8 @@ package com.github.pickleface5.util;
 
 import com.github.pickleface5.Main;
 import com.github.pickleface5.commands.*;
-import com.github.pickleface5.commands.imageing.ChadPfpCommand;
+import com.github.pickleface5.commands.imaging.AbstractCommand;
+import com.github.pickleface5.commands.imaging.ChadPfpCommand;
 import com.github.pickleface5.commands.music.*;
 import com.github.pickleface5.music.VoiceChannelDisconnectIfAlone;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -41,6 +42,7 @@ public class CommandRegistry {
         } catch (IOException e) {
             LOGGER.error("chad could not be registered: IOException returned.");
         }
+        registerSlashCommand("abstract", "Creates randomly generated abstract art.", new AbstractCommand());
     }
 
     // It's a bad idea to use the bots name, but it's okay since it will never get renamed. Ever.
@@ -52,7 +54,7 @@ public class CommandRegistry {
             Main.JDA.upsertCommand(name, description).queue();
         }
         Main.JDA.addEventListener(listener);
-        LOGGER.debug("Added Slash Command {} to {}", name, Main.JDA.getSelfUser().getName());
+        LOGGER.info("Added Slash Command {} to {}", name, Main.JDA.getSelfUser().getName());
     }
 
     private static void registerSlashCommand(CommandData commandData, ListenerAdapter listener) {
@@ -62,7 +64,7 @@ public class CommandRegistry {
             Main.JDA.upsertCommand(commandData).queue();
         }
         Main.JDA.addEventListener(listener);
-        LOGGER.debug("Added Slash Command {} to {}", commandData.getName(), Main.JDA.getSelfUser().getName());
+        LOGGER.info("Added Slash Command {} to {}", commandData.getName(), Main.JDA.getSelfUser().getName());
     }
 
     private static void registerEventListener(ListenerAdapter listener) {

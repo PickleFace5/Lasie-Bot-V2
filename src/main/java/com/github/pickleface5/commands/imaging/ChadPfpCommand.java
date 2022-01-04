@@ -1,4 +1,4 @@
-package com.github.pickleface5.commands.imageing;
+package com.github.pickleface5.commands.imaging;
 
 import com.github.pickleface5.Main;
 import com.github.pickleface5.util.EmbedUtils;
@@ -6,8 +6,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.IIOImage;
@@ -22,11 +20,9 @@ import java.net.URLConnection;
 import java.util.Objects;
 
 public class ChadPfpCommand extends ListenerAdapter {
-    private static final Logger logger = LogManager.getLogger(ChadPfpCommand.class);
     BufferedImage gigachad;
 
     public ChadPfpCommand() throws IOException {
-        //gigachad = ImageIO.read(new File("src/main/resources/imaging/chad/gigachad.png"));
         gigachad = ImageIO.read(Objects.requireNonNull(this.getClass().getClassLoader().getResource("imaging/chad/gigachad.png")));
     }
 
