@@ -33,7 +33,7 @@ public class LoopCommand extends ListenerAdapter {
             event.reply("Only people who can server mute can toggle loop!").queue();
         }
         TrackScheduler trackScheduler = MusicUtils.getGuildAudioPlayer(event.getGuild()).getTrackScheduler();
-        trackScheduler.isLooping = !trackScheduler.isLooping;
+        trackScheduler.isLooping = !trackScheduler.isLooping();
         if (trackScheduler.isLooping) event.reply("Looping! :arrows_counterclockwise:").queue();
         else event.reply("No longer looping. :arrows_counterclockwise:").queue();
     }

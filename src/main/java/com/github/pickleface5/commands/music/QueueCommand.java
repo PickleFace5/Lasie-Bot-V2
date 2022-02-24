@@ -24,14 +24,14 @@ public class QueueCommand extends ListenerAdapter {
         Guild guild = event.getGuild();
         GuildMusicManager guildMusicManager = MusicUtils.getGuildAudioPlayer(guild);
         BlockingQueue<AudioTrack> guildQueue = guildMusicManager.scheduler.getQueue();
-        if (guildQueue.size() == 0 && !guildMusicManager.getTrackScheduler().isLooping) {
+        if (guildQueue.size() == 0) {
             event.reply("There's nothing in the queue!").queue();
             return;
         }
         event.deferReply().queue();
         EmbedBuilder messageEmbed = new EmbedBuilder().setColor(EmbedUtils.EMBED_COLOR)
                 .setTitle("Music Queue");
-        if (guildMusicManager.getTrackScheduler().isLooping) {
+        if (guildMusicManager.getTrackScheduler().isLooping()) {
             messageEmbed.addField("Now Playing", "[" + guildMusicManager.player.getPlayingTrack().getInfo().title + "](" + guildMusicManager.player.getPlayingTrack().getInfo().uri + ")", false);
             event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
             return;

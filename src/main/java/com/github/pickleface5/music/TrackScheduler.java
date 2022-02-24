@@ -53,4 +53,12 @@ public class TrackScheduler extends AudioEventAdapter {
             nextTrack(track);
         }
     }
+
+    public Boolean isLooping() {
+        return isLooping;
+    }
+
+    public void setIsLooping(boolean bool) {
+        isLooping = bool;
+    }
 }
