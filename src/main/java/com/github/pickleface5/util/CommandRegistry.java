@@ -46,6 +46,9 @@ public class CommandRegistry {
         registerSlashCommand("abstract", "Creates randomly generated abstract art.", new AbstractCommand());
         registerSlashCommand(new CommandData("pfpgrabber", "Grabs a users profile photo.")
                 .addOption(OptionType.USER, "user", "The user profile photo you want to grab."), new PfpGrabberCommand());
+        registerSlashCommand(new CommandData("minecraft", "Shows a minecraft servers info, such as current players, version, and time.")
+                .addOption(OptionType.STRING, "address", "The Minecraft server IP address.", true)
+                .addOption(OptionType.BOOLEAN, "bedrock", "If the server is on Minecraft: Bedrock, select this as true."), new MinecraftCommand());
     }
 
     // It's a bad idea to use the bots name, but it's okay since it will never get renamed. Ever.
