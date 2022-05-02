@@ -4,12 +4,15 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import net.dv8tion.jda.api.entities.Member;
 
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class TrackScheduler extends AudioEventAdapter {
     public Boolean isLooping;
+    public ArrayList<Member> skipVotes;
     private final AudioPlayer player;
     private final BlockingQueue<AudioTrack> queue;
 
@@ -60,5 +63,17 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public void setIsLooping(boolean bool) {
         isLooping = bool;
+    }
+
+    public ArrayList<Member> skipVotes() {
+        return skipVotes;
+    }
+
+    public void addSkipVotes(Member memberVote) {
+        skipVotes.add(memberVote);
+    }
+
+    public void clearSkipVotes() {
+        skipVotes.clear();
     }
 }

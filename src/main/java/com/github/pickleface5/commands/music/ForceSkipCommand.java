@@ -32,7 +32,11 @@ public class ForceSkipCommand extends ListenerAdapter {
                 event.reply("Only people who can server mute can force skip songs!").queue();
             }
             MusicUtils.getGuildAudioPlayer(event.getGuild()).scheduler.nextTrack(null);
-            event.reply("Skipped to next track.").queue();
+            if (MusicUtils.getGuildAudioPlayer(event.getGuild()).getTrackScheduler().getQueue().isEmpty()) {
+                event.reply("There's nothing to skip to!").queue();
+            } else {
+                event.reply("Skipped to next track.").queue();
+            }
         }
     }
 }
