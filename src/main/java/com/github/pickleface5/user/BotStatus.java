@@ -23,7 +23,11 @@ public class BotStatus {
             "Ori and the Will of the Wisps", "RUST", "Ori and the Blind Forest", "Titanfall", "Tic Tac Toe",
             "Subnautica", "Subnautica: Below Zero", "Pikuniku", "Cyberpunk 2077", "osu!", "Universe Sandbox",
             "PowerWash Simulator", "Muck", "Bloons Tower Defense 6", "Cookie Clicker", "Omori", "Don't Starve",
-            "Don't Starve Together", "OneShot", "DELTARUNE"};
+            "Don't Starve Together", "OneShot", "DELTARUNE", "Redmatch 2", "A Dance of Fire and Ice",
+            "Sid Meier's Civilization VI", "Elden Ring", "ROUNDS", "LEGO® Star Wars™: The Skywalker Saga",
+            "Forza Horizon 5", "Kerbal Space Program", "Kerbal Space Program 2", "It Takes Two", "EVE Online",
+            "God of War", "Just Cause 3", "Halo Infinite", "Splitgate", "Tom Clancy's Rainbow Six® Siege",
+            "Gorilla Tag", "Geometry Dash", "Among Us VR", "Who's Your Daddy?!", "Portal", "Portal 2"};
 
     private static final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
@@ -61,7 +65,7 @@ public class BotStatus {
             @NotNull
             @Override
             public ActivityType getType() {
-                return ActivityType.DEFAULT;
+                return ActivityType.PLAYING;
             }
 
             @Nullable
