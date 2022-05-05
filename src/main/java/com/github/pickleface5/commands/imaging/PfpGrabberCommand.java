@@ -4,7 +4,7 @@ import com.github.pickleface5.Main;
 import com.github.pickleface5.util.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class PfpGrabberCommand extends ListenerAdapter {
     @Override
-    public void onSlashCommand(@NotNull SlashCommandEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!(event.getName().equals("pfpgrabber"))) return;
         User user;
         try {

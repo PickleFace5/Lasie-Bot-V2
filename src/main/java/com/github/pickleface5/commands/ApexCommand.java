@@ -10,7 +10,7 @@ import kong.unirest.json.JSONException;
 import kong.unirest.json.JSONObject;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +23,7 @@ public class ApexCommand extends ListenerAdapter {
     private static final Logger logger = LogManager.getLogger(ApexCommand.class);
 
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if (!event.getName().equals("apex")) return;
         if (event.getOption("username") == null) event.reply("You need to enter a username!").queue();
         event.deferReply().queue();

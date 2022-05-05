@@ -32,7 +32,7 @@ public class MusicUtils {
         AudioSourceManagers.registerLocalSource(playerManager);
     }
 
-    public static void connectToVoice(Guild guild, VoiceChannel voiceChannel) {
+    public static void connectToVoice(Guild guild, AudioChannel voiceChannel) {
         getGuildAudioPlayer(guild).getTrackScheduler().clearQueue();
         getGuildAudioPlayer(guild).player.destroy();
         getGuildAudioPlayer(guild).getTrackScheduler().isLooping = false;

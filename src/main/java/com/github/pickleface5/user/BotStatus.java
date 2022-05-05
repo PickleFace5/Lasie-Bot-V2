@@ -65,7 +65,7 @@ public class BotStatus {
             @NotNull
             @Override
             public ActivityType getType() {
-                return ActivityType.DEFAULT;
+                return ActivityType.PLAYING;
             }
 
             @Nullable

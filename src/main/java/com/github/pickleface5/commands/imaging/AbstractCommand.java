@@ -3,7 +3,7 @@ package com.github.pickleface5.commands.imaging;
 import com.github.pickleface5.Main;
 import com.github.pickleface5.util.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +23,7 @@ public class AbstractCommand extends ListenerAdapter {
     private static final Logger logger = LogManager.getLogger(AbstractCommand.class);
 
     @Override
-    public void onSlashCommand(@NotNull SlashCommandEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("abstract")) return;
         event.deferReply().queue();
         Random random = new Random(event.hashCode());

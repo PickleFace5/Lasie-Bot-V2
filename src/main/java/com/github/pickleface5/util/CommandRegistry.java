@@ -10,6 +10,7 @@ import com.github.pickleface5.music.VoiceChannelDisconnectIfAlone;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,11 +25,11 @@ public class CommandRegistry {
         registerSlashCommand("ping", "Returns the ping for the bot.", new PingCommand());
         registerSlashCommand("info", "Credits for Lasie Bot.", new InfoCommand());
         registerSlashCommand("members", "Returns a count of members in the server.", new MembersCommand());
-        registerSlashCommand(new CommandData("apex", "Returns the stats of an Apex Legends player.")
+        registerSlashCommand(Commands.slash("apex", "Returns the stats of an Apex Legends player.")
                 .addOption(OptionType.STRING, "username", "Username of the Apex Legends player you want to look up.", true), new ApexCommand());
         registerSlashCommand("join", "Joins your current voice channel.", new JoinCommand());
         registerSlashCommand("leave", "Leaves the voice channel the bot is connected to.", new LeaveCommand());
-        registerSlashCommand(new CommandData("play", "Plays audio in your voice channel.")
+        registerSlashCommand(Commands.slash("play", "Plays audio in your voice channel.")
                 .addOption(OptionType.STRING, "search", "The URL for your desired audio or the search result.", true), new PlayCommand());
         registerSlashCommand("forceskip", "Immediately skips the current track.", new ForceSkipCommand());
         registerSlashCommand("queue", "Shows the current music queue", new QueueCommand());
@@ -38,15 +39,15 @@ public class CommandRegistry {
         registerSlashCommand("loop", "Toggles looping the current track.", new LoopCommand());
         registerSlashCommand("skip", "Allows you to skip the song when your alone in voice.", new SkipCommand());
         try {
-            registerSlashCommand(new CommandData("chad", "Turns you into a gigachad.")
+            registerSlashCommand(Commands.slash("chad", "Turns you into a gigachad.")
                     .addOption(OptionType.USER, "user", "The user to want to make a **king**", false), new ChadPfpCommand());
         } catch (IOException e) {
             LOGGER.error("chad could not be registered: IOException returned.");
         }
         registerSlashCommand("abstract", "Creates randomly generated abstract art.", new AbstractCommand());
-        registerSlashCommand(new CommandData("pfpgrabber", "Grabs a users profile photo.")
+        registerSlashCommand(Commands.slash("pfpgrabber", "Grabs a users profile photo.")
                 .addOption(OptionType.USER, "user", "The user profile photo you want to grab."), new PfpGrabberCommand());
-        registerSlashCommand(new CommandData("minecraft", "Shows a minecraft servers info, such as current players, version, and time.")
+        registerSlashCommand(Commands.slash("minecraft", "Shows a minecraft servers info, such as current players, version, and time.")
                 .addOption(OptionType.STRING, "address", "The Minecraft server IP address.", true)
                 .addOption(OptionType.BOOLEAN, "bedrock", "If the server is on Minecraft: Bedrock, select this as true."), new MinecraftCommand());
     }

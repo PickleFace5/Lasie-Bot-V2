@@ -7,7 +7,7 @@ import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +19,7 @@ import java.util.Objects;
 public class MinecraftCommand extends ListenerAdapter {
 
     @Override
-    public void onSlashCommand(@NotNull SlashCommandEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("minecraft")) return;
         assert event.getOption("address") != null;
         event.deferReply().queue();

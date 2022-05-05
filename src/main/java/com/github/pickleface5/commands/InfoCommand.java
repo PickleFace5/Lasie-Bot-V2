@@ -4,12 +4,13 @@ import com.github.pickleface5.Main;
 import com.github.pickleface5.util.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
 public class InfoCommand extends ListenerAdapter {
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("info")) return;
         MessageEmbed embed = new EmbedBuilder()
                 .setTitle("Lasie Bot")

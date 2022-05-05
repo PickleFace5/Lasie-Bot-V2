@@ -3,9 +3,9 @@ package com.github.pickleface5.commands.music;
 import com.github.pickleface5.Main;
 import com.github.pickleface5.music.GuildMusicManager;
 import com.github.pickleface5.util.MusicUtils;
+import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class SkipCommand extends ListenerAdapter {
     @Override
-    public void onSlashCommand(@NotNull SlashCommandEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("skip") || event.getUser().isBot()) return;
         if (event.getGuild() == null) {
             event.reply("You need to use this in a server!").queue();
@@ -21,7 +21,7 @@ public class SkipCommand extends ListenerAdapter {
         }
         GuildVoiceState memberVoiceState = Objects.requireNonNull(event.getMember()).getVoiceState();
         assert memberVoiceState != null;
-        if (!memberVoiceState.inVoiceChannel()) {
+        if (!memberVoiceState.inAudioChannel()) {
             event.reply("You need to be in a voice channel!").queue();
             return;
         }
@@ -30,7 +30,7 @@ public class SkipCommand extends ListenerAdapter {
             return;
         }
         GuildMusicManager guildAudioPlayer = MusicUtils.getGuildAudioPlayer(event.getGuild());
-        VoiceChannel voiceChannel = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(event.getGuild().getMember(Main.JDA.getSelfUser())).getVoiceState()).getChannel());
+        AudioChannel voiceChannel = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(event.getGuild().getMember(Main.JDA.getSelfUser())).getVoiceState()).getChannel());
         if (guildAudioPlayer.getTrackScheduler().getQueue().isEmpty()) {
             event.reply("There's nothing to skip to!").queue();
             return;

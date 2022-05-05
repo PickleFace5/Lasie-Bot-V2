@@ -3,14 +3,15 @@ package com.github.pickleface5.commands;
 import com.github.pickleface5.util.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 public class MembersCommand extends ListenerAdapter {
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("members")) return;
         if (event.isFromGuild()) {
             MessageEmbed embed = new EmbedBuilder()
