@@ -40,7 +40,7 @@ public class PfpGrabberCommand extends ListenerAdapter {
                 openConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
                 openConnection.connect();
             } catch (Exception e) {
-                event.getHook().sendMessage("There was an issue while requesting your profile photo.").queue();
+                event.getHook().sendMessage("There was an issue while loading your profile photo.").queue();
                 e.printStackTrace();
                 return;
             }
@@ -58,7 +58,7 @@ public class PfpGrabberCommand extends ListenerAdapter {
                 byte[] response = out.toByteArray();
                 img = ImageIO.read(new ByteArrayInputStream(response));
             } catch (Exception e) {
-                event.getHook().sendMessage("I couldn't read an image from this link. The issue will be fixed soon.").queue();
+                event.getHook().sendMessage("I couldn't read an image from this link. Please tell the developer :pray: ").queue();
                 e.printStackTrace();
                 return;
             }
@@ -76,7 +76,7 @@ public class PfpGrabberCommand extends ListenerAdapter {
         } catch (IOException | NullPointerException e) {
             event.getHook().sendMessage("There was an error while downloading your profile photo! " +
                     "Make sure you have a custom profile photo, not an discord profile photo. If it *still* doesn't " +
-                    "work for you, it's an issue on our end").queue();
+                    "work for you, it's an issue with us. Please contact the developer.").queue();
             e.printStackTrace();
             return;
         }

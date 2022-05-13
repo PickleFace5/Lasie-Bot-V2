@@ -33,17 +33,17 @@ public class ApexCommand extends ListenerAdapter {
             try {
                 checkForError(jsonResponse, Objects.requireNonNull(event.getOption("username")).getAsString());
             } catch (PlayerNotFoundException e) {
-                logger.debug("Player not found: {}. Attempting search on PS4...", Objects.requireNonNull(event.getOption("username")).getAsString());
+                logger.trace("Player not found: {}. Attempting search on PS4...", Objects.requireNonNull(event.getOption("username")).getAsString());
                 jsonResponse = Unirest.get(ALApi.replace("*", "PS4")).asJson();
                 try {
                     checkForError(jsonResponse, Objects.requireNonNull(event.getOption("username")).getAsString());
                 } catch (PlayerNotFoundException e1) {
-                    logger.debug("Player not found: {}. Attempting search on X1...", Objects.requireNonNull(event.getOption("username")).getAsString());
+                    logger.trace("Player not found: {}. Attempting search on X1...", Objects.requireNonNull(event.getOption("username")).getAsString());
                     jsonResponse = Unirest.get(ALApi.replace("*", "X1")).asJson();
                     try {
                         checkForError(jsonResponse, Objects.requireNonNull(event.getOption("username")).getAsString());
                     } catch (PlayerNotFoundException e2) {
-                        logger.debug("Player not found, sending error message...");
+                        logger.trace("Player not found, sending error message...");
                         MessageEmbed errorEmbed = new EmbedBuilder()
                                 .setColor(EmbedUtils.EMBED_COLOR)
                                 .setFooter("Powered by https://apexlegendsapi.com")
