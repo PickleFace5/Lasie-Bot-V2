@@ -6,6 +6,7 @@ import com.github.pickleface5.commands.imaging.AbstractCommand;
 import com.github.pickleface5.commands.imaging.ChadPfpCommand;
 import com.github.pickleface5.commands.imaging.PfpGrabberCommand;
 import com.github.pickleface5.commands.music.*;
+import com.github.pickleface5.logging.ServerChecker;
 import com.github.pickleface5.music.VoiceChannelDisconnectIfAlone;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -22,6 +23,7 @@ public class CommandRegistry {
 
     static {
         registerEventListener(new VoiceChannelDisconnectIfAlone());
+        registerEventListener(new ServerChecker());
         registerSlashCommand("ping", "Returns the ping for the bot.", new PingCommand());
         registerSlashCommand("info", "Credits for Lasie Bot.", new InfoCommand());
         registerSlashCommand("members", "Returns a count of members in the server.", new MembersCommand());

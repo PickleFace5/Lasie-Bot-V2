@@ -27,6 +27,9 @@
         <Logger name="net.dv8tion.jda.api.JDA" level="WARN" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
+        <Logger name="com.github.pickleface5.logging.ServerChecker" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
         <root level="TRACE">
             <appender-ref ref="Console"/>
         </root>
