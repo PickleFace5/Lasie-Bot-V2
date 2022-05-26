@@ -2,35 +2,11 @@
 <Configuration status="INFO">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%-5level %logger{36} - %msg%n"/>
+            <PatternLayout pattern="%-5level %logger{36} - %msg%n" disableAnsi="false"/>
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="com.github.pickleface5.Main" level="INFO" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
-        <Logger name="net.dv8tion.jda.internal" level="WARN" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
-        <Logger name="net.dv8tion.jda.api.utils" level="WARN" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
-        <Logger name="com.sedmelluq.discord.lavaplayer" level="ERROR" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
-        <Logger name="com.sedmelluq.lava.common.natives" level="WARN" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
-        <Logger name="com.sedmelluq.discord.lavaplayer.track.playback.LocalAudioTrackExecutor" level="FATAL" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
-        <Logger name="net.dv8tion.jda.api.JDA" level="WARN" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
-        <Logger name="com.github.pickleface5.logging.ServerChecker" level="INFO" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
-        <root level="TRACE">
+        <root level="INFO">
             <appender-ref ref="Console"/>
         </root>
     </Loggers>

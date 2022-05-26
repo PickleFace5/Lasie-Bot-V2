@@ -35,10 +35,14 @@ public class Main {
         logger.traceEntry();
 
         if (TEMP_DIRECTORY.exists()) {
-            logger.info("Temp Directory exists.");
+            logger.info("Temp Directory exists");
         } else {
             if (TEMP_DIRECTORY.mkdirs()) // Returns a boolean, but this has a very low chance of returning false, sooo...
-                logger.info("Temp Directory created.");
+                logger.info("Temp Directory created");
+            else {
+                logger.fatal("TEMP DIRECTORY ERROR, NOT CREATED");
+            }
+
         }
         logger.info("Current temp path: {}", Main.TEMP_DIRECTORY.getAbsolutePath());
 
@@ -48,5 +52,6 @@ public class Main {
 
         BotStatus.activateBotActivityRoutine();
         logger.info("Finished loading {} on shard {}!", JDA.getSelfUser().getName(), JDA.getShardInfo().getShardId() + 1);
+        logger.info("Current loaded in [{}] servers", JDA.getGuilds().size());
     }
 }

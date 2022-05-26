@@ -8,6 +8,7 @@ import com.github.pickleface5.commands.imaging.PfpGrabberCommand;
 import com.github.pickleface5.commands.music.*;
 import com.github.pickleface5.logging.ServerChecker;
 import com.github.pickleface5.music.VoiceChannelDisconnectIfAlone;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -60,7 +61,11 @@ public class CommandRegistry {
     // getGuildById("798332906614423563") sends the commands only to the debug guild, so I don't have to wait an hour.
     private static void registerSlashCommand(String name, String description, ListenerAdapter listener) {
         if (!Main.JDA.getSelfUser().getName().equals("Lasie Bot")) {
-            Objects.requireNonNull(Main.JDA.getGuildById("798332906614423563")).upsertCommand(name, description).queue();
+            try {
+                Objects.requireNonNull(Main.JDA.getGuildById("798332906614423563")).upsertCommand(name, description).queue();
+            } catch (NullPointerException | ErrorResponseException exception) {
+                LOGGER.error("Test server not found");
+            }
         } else {
             Main.JDA.upsertCommand(name, description).queue();
         }
@@ -70,7 +75,11 @@ public class CommandRegistry {
 
     private static void registerSlashCommand(CommandData commandData, ListenerAdapter listener) {
         if (!Main.JDA.getSelfUser().getName().equals("Lasie Bot")) {
-            Objects.requireNonNull(Main.JDA.getGuildById("798332906614423563")).upsertCommand(commandData).queue();
+            try {
+                Objects.requireNonNull(Main.JDA.getGuildById("798332906614423563")).upsertCommand(commandData).queue();
+            } catch (ErrorResponseException | NullPointerException exception) {
+                LOGGER.error("Test server not found");
+            }
         } else {
             Main.JDA.upsertCommand(commandData).queue();
         }
