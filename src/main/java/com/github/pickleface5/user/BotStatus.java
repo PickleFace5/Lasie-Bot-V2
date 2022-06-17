@@ -27,7 +27,12 @@ public class BotStatus {
             "Sid Meier's Civilization VI", "Elden Ring", "ROUNDS", "LEGO® Star Wars™: The Skywalker Saga",
             "Forza Horizon 5", "Kerbal Space Program", "Kerbal Space Program 2", "It Takes Two", "EVE Online",
             "God of War", "Just Cause 3", "Halo Infinite", "Splitgate", "Tom Clancy's Rainbow Six® Siege",
-            "Gorilla Tag", "Geometry Dash", "Among Us VR", "Who's Your Daddy?!", "Portal", "Portal 2"};
+            "Gorilla Tag", "Geometry Dash", "Among Us VR", "Who's Your Daddy?!", "Portal", "Portal 2", "Risk of Rain",
+            "Risk of Rain 2", "Bluestacks 5", "Minecraft", "Minecraft: Dungeons", "Geoguessr", "Hatsune Miku: Project Diva Megamix",
+            "Have A Nice Death", "Eastward", "The Stanley Parable: Ultra Deluxe", "Muse Dash", "Beholder", "Slime Rancher",
+            "Slime Rancher 2", "Iron Lung", "Blade and Sorcery", "Choo-Choo Charles", "Beat Saber", "WorldBox - God Simulator",
+            "Dyson Sphere Program", "Little Nightmares", "Little Nightmares II", "Sea of Thieves", "Teardown",
+            "LEGO Star Wars: The Skywalker Saga", "Titanfall 2", "Enter the Gungeon"};
 
     private static final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
