@@ -29,11 +29,11 @@ public class ResumeCommand extends ListenerAdapter {
             return;
         }
         GuildMusicManager guildMusicManager = MusicUtils.getGuildAudioPlayer(event.getGuild());
-        if (guildMusicManager.player.isPaused()) {
+        if (!guildMusicManager.player.isPaused()) {
             event.reply("I'm already playing!").queue();
             return;
         }
-        guildMusicManager.player.setPaused(true);
+        guildMusicManager.player.setPaused(false);
         event.reply("Resumed :play_pause:").queue();
     }
 }
