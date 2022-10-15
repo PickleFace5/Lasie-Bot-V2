@@ -16,7 +16,7 @@ public class MembersCommand extends ListenerAdapter {
         if (event.isFromGuild()) {
             MessageEmbed embed = new EmbedBuilder()
                     .setTitle("Members in " + Objects.requireNonNull(event.getGuild()).getName())
-                    .addField("Total Members", String.valueOf(event.getGuild().getMembers().size()), false)
+                    .addField("Total Members", String.valueOf(event.getGuild().getMemberCount()), false)
                     .setColor(EmbedUtils.EMBED_COLOR)
                     .build();
             event.replyEmbeds(embed).queue();
