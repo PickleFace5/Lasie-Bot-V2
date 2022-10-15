@@ -65,10 +65,12 @@ public class MusicUtils {
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
+                String title = track.getInfo().title;
+                if (title.equals("Unknown title")) title = track.getInfo().uri;
                 channel.sendMessageEmbeds(new EmbedBuilder()
                         .setColor(EmbedUtils.EMBED_COLOR)
                         .setTitle("Adding to queue")
-                        .setDescription("[" + track.getInfo().title + "](" + track.getInfo().uri + ")")
+                        .setDescription("[" + title + "](" + track.getInfo().uri + ")")
                         .setThumbnail("https://img.youtube.com/vi/" + extractVideoIdFromUrl(track.getInfo().uri) + "/mqdefault.jpg")
                         .setFooter("Added by " + user.getName(), user.getAvatarUrl())
                         .build()).queue();
