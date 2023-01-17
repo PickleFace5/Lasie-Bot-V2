@@ -36,7 +36,7 @@ public class BotStatus {
             "Call of Duty: Black Ops II", "Call of Duty: Modern Warfare II", "Halo Reach", "Goat Simulator",
             "Halo 3: ODST", "LittleBigPlanet", "LittleBigPlanet 2", "LittleBigPlanet 3", "Sackboy: A Big Adventure",
             "ModNation Racers", "Mario + Rabbids Sparks of Hope", "The Legend of Zelda: Breath of the Wild",
-            "Super Smash Bros. Ultimate", "Just Shapes and Beats"};
+            "Super Smash Bros. Ultimate", "Just Shapes and Beats", "PAYDAY 2", "PAYDAY 3", "Roblox", "Minecraft"};
 
     private static final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
