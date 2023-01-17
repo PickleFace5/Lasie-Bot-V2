@@ -5,6 +5,7 @@ import com.github.pickleface5.util.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.utils.FileUpload;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -86,7 +87,7 @@ public class AbstractCommand extends ListenerAdapter { //TODO: Completely redo (
                 .setImage("attachment://abstract.png")
                 .setColor(EmbedUtils.EMBED_COLOR)
                 .build())
-                .addFile(new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + event.getUser().getId() + "_abstract.png"), "abstract.png")
+                .addFiles(FileUpload.fromData(new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + event.getUser().getId() + "_abstract.png"), "abstract.png"))
                 .queue();
     }
 

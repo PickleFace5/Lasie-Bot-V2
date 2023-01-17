@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.utils.FileUpload;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.IIOImage;
@@ -97,7 +98,7 @@ public class ChadPfpCommand extends ListenerAdapter {
                         .setColor(EmbedUtils.EMBED_COLOR)
                         .setFooter("'Absolute chad.'")
                         .build())
-                .addFile(new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + user.getId() + "_final.png"), "gigachad.png")
+                .addFiles(FileUpload.fromData(new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + user.getId() + "_final.png"), "gigachad.png"))
                 .queue();
     }
 }

@@ -2,9 +2,9 @@ package com.github.pickleface5.commands.music;
 
 import com.github.pickleface5.Main;
 import com.github.pickleface5.util.MusicUtils;
-import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -42,7 +42,7 @@ public class PlayCommand extends ListenerAdapter {
                 return;
             }
         }
-        new MusicUtils(MusicUtils.playerManager, MusicUtils.musicManagers).loadAndPlay(event.getTextChannel(), Objects.requireNonNull(event.getOption("search")).getAsString(), event.getUser());
+        new MusicUtils(MusicUtils.playerManager, MusicUtils.musicManagers).loadAndPlay(event.getChannel().asTextChannel(), Objects.requireNonNull(event.getOption("search")).getAsString(), event.getUser());
         event.getHook().sendMessage(":white_check_mark:").queue();
     }
 }

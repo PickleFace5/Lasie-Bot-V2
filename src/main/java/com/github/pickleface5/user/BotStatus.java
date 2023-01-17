@@ -4,6 +4,7 @@ package com.github.pickleface5.user;
 import com.github.pickleface5.Main;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.RichPresence;
+import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,7 +86,7 @@ public class BotStatus { //TODO: Automatically get list(?) (see roadmap)
 
             @Nullable
             @Override
-            public Emoji getEmoji() {
+            public EmojiUnion getEmoji() {
                 return null;
             }
         });

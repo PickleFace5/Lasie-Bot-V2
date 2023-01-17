@@ -2,22 +2,18 @@ package com.github.pickleface5.music;
 
 import com.github.pickleface5.Main;
 import com.github.pickleface5.util.MusicUtils;
-import net.dv8tion.jda.api.entities.AudioChannel;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class VoiceChannelDisconnectIfAlone extends ListenerAdapter {
-    @Override
-    public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
-        leaveIfAlone(event.getChannelLeft());
-    }
 
     @Override
-    public void onGuildVoiceMove(@NotNull GuildVoiceMoveEvent event) {
-        leaveIfAlone(event.getChannelLeft());
+    public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
+        leaveIfAlone(event.getChannelLeft().asVoiceChannel());
     }
+
 
     private void leaveIfAlone(AudioChannel voiceChannel) {
         if (voiceChannel.getMembers().isEmpty()) return;

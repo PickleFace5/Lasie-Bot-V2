@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.utils.FileUpload;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.DatatypeConverter;
@@ -87,7 +88,7 @@ public class MinecraftCommand extends ListenerAdapter {
         serverInfoEmbed.addField("", "Version: " + jsonResponse.getBody().getObject().getString("version"), false);
                 
         serverInfoEmbed.addField("Players", jsonResponse.getBody().getObject().getJSONObject("players").getInt("online") + "/" + jsonResponse.getBody().getObject().getJSONObject("players").getInt("max"), true);
-        event.getHook().sendMessageEmbeds(serverInfoEmbed.build()).addFile(new File(path), "icon.png").queue();
+        event.getHook().sendMessageEmbeds(serverInfoEmbed.build()).addFiles(FileUpload.fromData(new File(path), "icon.png")).queue();
     }
 }
 

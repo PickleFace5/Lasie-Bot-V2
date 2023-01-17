@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.utils.FileUpload;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.IIOImage;
@@ -85,6 +86,6 @@ public class PfpGrabberCommand extends ListenerAdapter {
                         .setColor(EmbedUtils.EMBED_COLOR)
                         .setImage("attachment://" + user.getId() + ".png")
                 .build()
-        ).addFile(new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + user.getId() + ".png")).queue();
+        ).addFiles(FileUpload.fromData(new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + user.getId() + ".png"))).queue();
     }
 }

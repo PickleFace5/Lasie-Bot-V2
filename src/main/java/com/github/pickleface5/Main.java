@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.util.HashMap;
 
@@ -25,8 +24,9 @@ public class Main {
                     .enableCache(CacheFlag.VOICE_STATE)
                     .build()
                     .awaitReady();
-        } catch (InterruptedException | LoginException e) {
-            e.printStackTrace();
+        } catch (InterruptedException e) {
+            logger.fatal(e.getMessage());
+            System.exit(-1);
         }
     }
     public static final String BOT_USER_ID = JDA.getSelfUser().getId();
