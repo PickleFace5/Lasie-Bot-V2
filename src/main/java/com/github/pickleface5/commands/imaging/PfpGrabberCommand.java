@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class PfpGrabberCommand extends ListenerAdapter {
     @Override
-    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) { //TODO: Optimize/Revamp + higher quality(?)
         if (!(event.getName().equals("pfpgrabber"))) return;
         User user;
         try {

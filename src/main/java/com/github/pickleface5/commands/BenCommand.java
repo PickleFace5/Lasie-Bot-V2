@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Random;
 
-public class BenCommand extends ListenerAdapter {
+public class BenCommand extends ListenerAdapter { //TODO: remove. it's dumb
     private static final Logger logger = LogManager.getLogger(BenCommand.class);
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {

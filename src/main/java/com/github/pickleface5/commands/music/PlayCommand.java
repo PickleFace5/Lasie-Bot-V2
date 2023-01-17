@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class PlayCommand extends ListenerAdapter {
     @Override
-    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) { //TODO: Completely Redo/Revamp Music Commands (see roadmap)
         if (!event.getName().equals("play")) return;
         event.deferReply().queue();
         if (event.getGuild() == null) {

@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
-public class BotStatus {
+public class BotStatus { //TODO: Automatically get list(?) (see roadmap)
     private static final Random GENERATOR = new Random();
     static final String[] GAME_LIST = {"Spooky's Jumpscare Mansion: HD Renovation", "Hollow Knight", "A Hat In Time", "KARLSON",
             "Hollow Knight: Silksong", "Celeste", "Factorio", "Satisfactory", "Halo: Infinite", "Apex Legends",

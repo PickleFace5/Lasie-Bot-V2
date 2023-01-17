@@ -19,7 +19,7 @@ import java.util.Random;
 
 import static java.lang.Math.sqrt;
 
-public class AbstractCommand extends ListenerAdapter {
+public class AbstractCommand extends ListenerAdapter { //TODO: Completely redo (see roadmap)
     private static final Logger logger = LogManager.getLogger(AbstractCommand.class);
 
     @Override

@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Objects;
 
 
-public class ApexCommand extends ListenerAdapter {
+public class ApexCommand extends ListenerAdapter { // TODO: Completely redo (see roadmap)
     private final String apexToken = System.getenv("APEX_TOKEN");
     private static final Logger logger = LogManager.getLogger(ApexCommand.class);
 

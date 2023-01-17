@@ -27,7 +27,7 @@ public class ChadPfpCommand extends ListenerAdapter {
     }
 
     @Override
-    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) { // TODO: optimize + add more variations (see roadmap)
         if (!(event.getName().equals("chad"))) return;
         User user;
         try {
