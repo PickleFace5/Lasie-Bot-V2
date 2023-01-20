@@ -25,7 +25,7 @@ public class BotStatus { //TODO: Automatically get list(?) (see roadmap)
             "Subnautica", "Subnautica: Below Zero", "Pikuniku", "Cyberpunk 2077", "osu!", "Universe Sandbox",
             "PowerWash Simulator", "Muck", "Bloons TD 6", "Cookie Clicker", "Omori", "Don't Starve",
             "Don't Starve Together", "OneShot", "DELTARUNE", "Redmatch 2", "A Dance of Fire and Ice",
-            "Sid Meier's Civilization VI", "Elden Ring", "ROUNDS", "LEGO® Star Wars™: The Skywalker Saga",
+            "Sid Meier's Civilization VI", "Elden Ring", "ROUNDS", "LEGO Star Wars: The Skywalker Saga",
             "Forza Horizon 5", "Kerbal Space Program", "Kerbal Space Program 2", "It Takes Two", "EVE Online",
             "God of War", "Just Cause 3", "Halo Infinite", "Splitgate", "Tom Clancy's Rainbow Six® Siege",
             "Gorilla Tag", "Geometry Dash", "Among Us VR", "Who's Your Daddy?!", "Portal", "Portal 2", "Overwatch 2",

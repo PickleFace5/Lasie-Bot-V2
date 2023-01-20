@@ -52,6 +52,6 @@ public class Main {
 
         BotStatus.activateBotActivityRoutine();
         logger.info("Finished loading {} on shard {}!", JDA.getSelfUser().getName(), JDA.getShardInfo().getShardId() + 1);
-        logger.info("Current loaded in [{}] servers", JDA.getGuilds().size());
+        logger.info("Currently loaded in [{}] servers", JDA.getGuilds().size());
     }
 }
