@@ -29,7 +29,7 @@ public class BotStatus { //TODO: Automatically get list(?) (see roadmap)
             "Forza Horizon 5", "Kerbal Space Program", "Kerbal Space Program 2", "It Takes Two", "EVE Online",
             "God of War", "Just Cause 3", "Halo Infinite", "Splitgate", "Tom Clancy's Rainbow Six® Siege",
             "Gorilla Tag", "Geometry Dash", "Among Us VR", "Who's Your Daddy?!", "Portal", "Portal 2", "Overwatch 2",
-            "Kerbal Space Program", "Stray", "Enter the Gungeon", "Bloons TD 5", "ARK: Survival Evolved", "Bloons TD 4",
+            "Stray", "Enter the Gungeon", "Bloons TD 5", "ARK: Survival Evolved", "Bloons TD 4",
             "Bloons TD 3", "Bloons TD 2", "Bloons Tower Defense", "Clash of Clans", "Clash Royale",
             "Hatsune Miku: Project Diva X", "Risk of Rain", "Risk of Rain 2",
             "Freddy Fazbear's Pizzeria Simulator", "Splatoon", "Splatoon 2", "Splatoon 3", "Mario Kart Wii",
@@ -37,7 +37,11 @@ public class BotStatus { //TODO: Automatically get list(?) (see roadmap)
             "Call of Duty: Black Ops II", "Call of Duty: Modern Warfare II", "Halo Reach", "Goat Simulator",
             "Halo 3: ODST", "LittleBigPlanet", "LittleBigPlanet 2", "LittleBigPlanet 3", "Sackboy: A Big Adventure",
             "ModNation Racers", "Mario + Rabbids Sparks of Hope", "The Legend of Zelda: Breath of the Wild",
-            "Super Smash Bros. Ultimate", "Just Shapes and Beats", "PAYDAY 2", "PAYDAY 3", "Roblox", "Minecraft"};
+            "Super Smash Bros. Ultimate", "Just Shapes and Beats", "PAYDAY 2", "PAYDAY 3", "Roblox", "Minecraft", "Battle Cats",
+            "Garry's Mod", "XCOM", "XCOM 2", "XCOM EW", "Dark Tide", "Vermintide", "Vermintide 2", "Goat Simulator 3",
+            "TABS", "War Thunder", "OMORI", "Cool Math Games", "Cut The Rope", "Angry Birds", "Subway Surfers",
+            "Smashy Road: Wanted", "Smashy Road 2", "TETRIS 99", "Chess", "Bloons TD Battles", "Fallout Shelter",
+            "SIMS 4", "Google Snake", "PAC-MAN", "Beat Saber", "The Geneva Conventions of August 12th, 1949"};
 
     private static final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
