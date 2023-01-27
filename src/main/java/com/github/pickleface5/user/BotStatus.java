@@ -27,7 +27,7 @@ public class BotStatus { //TODO: Automatically get list(?) (see roadmap)
             "Don't Starve Together", "OneShot", "DELTARUNE", "Redmatch 2", "A Dance of Fire and Ice",
             "Sid Meier's Civilization VI", "Elden Ring", "ROUNDS", "LEGO Star Wars: The Skywalker Saga",
             "Forza Horizon 5", "Kerbal Space Program", "Kerbal Space Program 2", "It Takes Two", "EVE Online",
-            "God of War", "Just Cause 3", "Halo Infinite", "Splitgate", "Tom Clancy's Rainbow Six® Siege",
+            "God of War", "Just Cause 3", "Halo Infinite", "Splitgate", "Tom Clancy's Rainbow Six Siege",
             "Gorilla Tag", "Geometry Dash", "Among Us VR", "Who's Your Daddy?!", "Portal", "Portal 2", "Overwatch 2",
             "Stray", "Enter the Gungeon", "Bloons TD 5", "ARK: Survival Evolved", "Bloons TD 4",
             "Bloons TD 3", "Bloons TD 2", "Bloons Tower Defense", "Clash of Clans", "Clash Royale",
