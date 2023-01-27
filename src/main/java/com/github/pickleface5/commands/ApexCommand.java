@@ -1,111 +1,229 @@
 package com.github.pickleface5.commands;
 
-import com.github.pickleface5.exceptions.PlayerNeverPlayedException;
-import com.github.pickleface5.exceptions.PlayerNotFoundException;
+import com.github.pickleface5.commands.apex.Platforms;
 import com.github.pickleface5.util.EmbedUtils;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
+import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONException;
 import kong.unirest.json.JSONObject;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.Command;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
-public class ApexCommand extends ListenerAdapter { // TODO: Completely redo (see roadmap)
-    private final String apexToken = System.getenv("APEX_TOKEN");
+public class ApexCommand extends ListenerAdapter {
+
+    private final String APEX_TOKEN = System.getenv("APEX_TOKEN");
     private static final Logger logger = LogManager.getLogger(ApexCommand.class);
+    private final String[] OPTIONS = new String[]{"Player Statistics", "Map Rotation", "Predator Requirements"};
+
+    @Override
+    public void onCommandAutoCompleteInteraction(CommandAutoCompleteInteractionEvent event) {
+        if (event.getName().equals("apex") && event.getFocusedOption().getName().equals("subcommand")) {
+            List<Command.Choice> options = Stream.of(OPTIONS)
+                    .filter(word -> word.startsWith(event.getFocusedOption().getValue())) // only display words that start with the user's current input
+                    .map(word -> new Command.Choice(word, word)) // map the words to choices
+                    .collect(Collectors.toList());
+            event.replyChoices(options).queue();
+        }
+    }
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if (!event.getName().equals("apex")) return;
-        if (event.getOption("username") == null) event.reply("You need to enter a username!").queue();
-        event.deferReply().queue();
-        String ALApi = "https://api.mozambiquehe.re/bridge?version=5&platform=*&player=" + Objects.requireNonNull(event.getOption("username")).getAsString() + "&auth=" + apexToken;
-        HttpResponse<JsonNode> jsonResponse = Unirest.get(ALApi.replace("*", "PC")).asJson();
-        try {
+        if (Objects.requireNonNull(event.getOption("subcommand")).getAsString().equals("Player Statistics")) {
+            // Get Player stats (PC -> PS4 -> X1 -> ok you can't get switches stats via usernames... but you can still use their uid to get their stats... but the nameToUID call doesn't support switch? >.>))
+            String playerUsername;
             try {
-                checkForError(jsonResponse, Objects.requireNonNull(event.getOption("username")).getAsString());
-            } catch (PlayerNotFoundException e) {
-                logger.trace("Player not found: {}. Attempting search on PS4...", Objects.requireNonNull(event.getOption("username")).getAsString());
-                jsonResponse = Unirest.get(ALApi.replace("*", "PS4")).asJson();
-                try {
-                    checkForError(jsonResponse, Objects.requireNonNull(event.getOption("username")).getAsString());
-                } catch (PlayerNotFoundException e1) {
-                    logger.trace("Player not found: {}. Attempting search on X1...", Objects.requireNonNull(event.getOption("username")).getAsString());
-                    jsonResponse = Unirest.get(ALApi.replace("*", "X1")).asJson();
-                    try {
-                        checkForError(jsonResponse, Objects.requireNonNull(event.getOption("username")).getAsString());
-                    } catch (PlayerNotFoundException e2) {
-                        logger.trace("Player not found, sending error message...");
-                        MessageEmbed errorEmbed = new EmbedBuilder()
-                                .setColor(EmbedUtils.EMBED_COLOR)
-                                .setFooter("Powered by https://apexlegendsapi.com")
-                                .setTitle("Player Not Found")
-                                .setDescription("The user doesn't exist or hasn't played Apex Legends. If you're sure the account exists, Steam accounts have to be linked to an Origins account to show account data. Nintendo Switch accounts can't be found.")
-                                .build();
-                        event.getHook().sendMessageEmbeds(errorEmbed).queue();
-                        return;
-                    }
+                playerUsername = Objects.requireNonNull(event.getOption("username")).getAsString();
+            } catch (NullPointerException exception) {
+                event.reply("You need to specify a username!").setEphemeral(true).queue();
+                return;
+            }
+            event.deferReply(false).queue();
+            String jsonPlayerStatsPrefix = "https://api.mozambiquehe.re/bridge?auth=" + APEX_TOKEN + "&player=" + playerUsername + "&platform=";
+            HttpResponse<JsonNode> jsonResponse = null;
+            String playerPlatform = "";
+            for (int i = 0; i < Platforms.values().length; i++) {
+                playerPlatform = Platforms.values()[i].toString();
+                logger.info("Searching player {} on {}...", playerUsername, playerPlatform);
+                jsonResponse = Unirest.get(jsonPlayerStatsPrefix + playerPlatform).asJson();
+            }
+            assert jsonResponse != null;
+            if (isError(jsonResponse)) {
+                sendErrorMessage(jsonResponse, event);
+                return;
+            } else {
+                logger.info("Player stats found on {}", playerPlatform);
+                logger.trace("({})", jsonPlayerStatsPrefix + playerPlatform);
+            }
+
+            assert jsonResponse != null;
+            JSONObject playerGlobalStats = jsonResponse.getBody().getObject().getJSONObject("global");
+            JSONObject playerRealtimeStats = jsonResponse.getBody().getObject().getJSONObject("realtime");
+            JSONArray playerLegendData = jsonResponse.getBody().getObject().getJSONObject("legends").getJSONObject("selected").getJSONArray("data");
+            String playerLevel = playerGlobalStats.getString("level");
+            logger.trace("Level: {}", playerLevel);
+            String playerNextLevel = playerGlobalStats.getString("toNextLevelPercent");
+            logger.trace("To Next Level %: {}", playerNextLevel);
+            String playerUID = playerGlobalStats.getString("uid");
+            logger.trace("UID: {}", playerUID);
+            String playerSelectedLegend = playerRealtimeStats.getString("selectedLegend");
+            logger.trace("Selected Legend: {}", playerSelectedLegend);
+            String currentState = playerRealtimeStats.getString("currentStateAsText");
+            logger.trace("Current State: {}", currentState);
+            JSONObject battleRoyaleStats = playerGlobalStats.getJSONObject("rank");
+            String normalRankName = battleRoyaleStats.getString("rankName");
+            String normalRankDiv = battleRoyaleStats.getString("rankDiv");
+            String normalRankScore = battleRoyaleStats.getString("rankScore");
+            JSONObject arenaStats = playerGlobalStats.getJSONObject("arena");
+            String arenaName = arenaStats.getString("rankName");
+            String arenaDiv = arenaStats.getString("rankDiv");
+            String arenaScore = arenaStats.getString("rankScore");
+            JSONObject battlePassStats = playerGlobalStats.getJSONObject("battlepass");
+            String battlePassLevel = battlePassStats.getString("level");
+            String rankImage = Integer.parseInt(normalRankScore) >= Integer.parseInt(arenaScore) ? battleRoyaleStats.getString("rankImg") : arenaStats.getString("rankImg");
+
+            if (normalRankDiv.equals("0")) normalRankDiv = "";
+            if (arenaDiv.equals("0")) arenaDiv = "";
+            EmbedBuilder statsEmbed = new EmbedBuilder().setColor(EmbedUtils.EMBED_COLOR);
+            statsEmbed.setTitle(playerUsername + " (" + playerPlatform + ")");
+            statsEmbed.setThumbnail(rankImage);
+            statsEmbed.addField("General", "**Status:** " + currentState + "\n**Level:** " + playerLevel + " *(" + playerNextLevel + "%)* \n **Selected Legend:** " + playerSelectedLegend + "\n **BP Level:** " + battlePassLevel, true);
+            statsEmbed.addField("BR", "**" + normalRankName + " " + normalRankDiv + "**\n **Score:** " + normalRankScore + " RP", true);
+            statsEmbed.addField("Arenas", "**" + arenaName + " " + arenaDiv + "**\n **Score:** " + arenaScore + " AP", true);
+            try {
+                for (int i = 0; i < 3; i++) {
+                    statsEmbed.addField(EmbedUtils.toTitleCase(playerLegendData.getJSONObject(i).get("name").toString()), playerLegendData.getJSONObject(i).get("value").toString(), true);
                 }
+            } catch (JSONException ignored) {
+            } // There isn't always 3 stats (can have none), so we just continue if it can't find 3.
+            statsEmbed.setFooter("Player UID: " + playerUID + "\nPowered by https://apexlegendsapi.com");
+
+            event.getHook().sendMessageEmbeds(statsEmbed.build()).queue();
+        } else if (Objects.requireNonNull(event.getOption("subcommand")).getAsString().equals("Map Rotation")) {
+            event.deferReply().queue();
+            String mapRotationLink = "https://api.mozambiquehe.re/maprotation?auth=" + APEX_TOKEN + "&version=2";
+            HttpResponse<JsonNode> jsonNode = Unirest.get(mapRotationLink).asJson();
+            JSONObject jsonResponse = jsonNode.getBody().getObject();
+            if (isError(jsonNode)) {
+                sendErrorMessage(jsonNode, event);
+                return;
             }
-        } catch (PlayerNeverPlayedException playerNeverPlayedException) {
-            MessageEmbed errorEmbed = new EmbedBuilder()
-                    .setColor(EmbedUtils.EMBED_COLOR)
-                    .setFooter("Powered by https://apexlegendsapi.com")
-                    .setTitle("Player Has Never Played Apex Legends")
-                    .setDescription("The user has an account, but has never played Apex Legends. If you're sure that you've entered the right account, make sure you're using your Origin username associated to your Apex Legends account.")
-                    .build();
-            event.getHook().sendMessageEmbeds(errorEmbed).queue();
-            return;
-        } catch (NullPointerException nullPointerException) {
-            MessageEmbed errorEmbed = new EmbedBuilder()
-                    .setColor(EmbedUtils.EMBED_COLOR)
-                    .setFooter("Powered by https://apexlegendsapi.com")
-                    .setTitle("Multiple Usernames Detected")
-                    .setDescription("Please only search for 1 account at a time.")
-                    .build();
-            event.getHook().sendMessageEmbeds(errorEmbed).queue();
-            return;
+            logger.trace(jsonResponse.toString());
+
+            JSONObject battleRoyaleMap = jsonResponse.getJSONObject("battle_royale");
+            JSONObject brCurrent = battleRoyaleMap.getJSONObject("current");
+            String brMap = brCurrent.getString("map");
+            String brTimer = brCurrent.getString("remainingTimer");
+            JSONObject brNext = battleRoyaleMap.getJSONObject("next");
+            String brNextMap = brNext.getString("map");
+            String brNextDuration = brNext.getString("DurationInMinutes");
+            JSONObject arenasMapMain = jsonResponse.getJSONObject("arenas");
+            JSONObject arenasCurrent = arenasMapMain.getJSONObject("current");
+            String arenasMap = arenasCurrent.getString("map");
+            String arenasTimer = arenasCurrent.getString("remainingTimer");
+            JSONObject arenasNext = arenasMapMain.getJSONObject("next");
+            String arenasNextMap = arenasNext.getString("map");
+            String arenasNextDuration = arenasNext.getString("DurationInMinutes");
+            JSONObject rankedBrMapMain = jsonResponse.getJSONObject("ranked");
+            JSONObject rankedBrCurrent = rankedBrMapMain.getJSONObject("current");
+            String rankedBrMap = rankedBrCurrent.getString("map");
+            String rankedBrTimer = rankedBrCurrent.getString("remainingTimer");
+            JSONObject rankedArenasMapMain = jsonResponse.getJSONObject("arenasRanked");
+            JSONObject rankedArenasCurrent = rankedArenasMapMain.getJSONObject("current");
+            String rankedArenasMap = rankedArenasCurrent.getString("map");
+            String rankedArenasTimer = rankedArenasCurrent.getString("remainingTimer");
+            JSONObject rankedArenasNext = rankedArenasMapMain.getJSONObject("next");
+            String rankedArenasNextMap = rankedArenasNext.getString("map");
+            String rankedArenasNextDuration = rankedArenasNext.getString("DurationInMinutes");
+
+            EmbedBuilder mapEmbed = new EmbedBuilder().setColor(EmbedUtils.EMBED_COLOR);
+            mapEmbed.setTitle("Current Map Rotations");
+            mapEmbed.addField("Battle Royale", "**Current:** " + brMap + " (Change in " + brTimer + ")\n **Next:** " + brNextMap + " (" + brNextDuration + " minutes)", true);
+            mapEmbed.addField("Arenas", "**Current:** " + arenasMap + " (Change in " + arenasTimer + ")\n **Next:** " + arenasNextMap + " (" + arenasNextDuration + " minutes)", true);
+            mapEmbed.addBlankField(false);
+            mapEmbed.addField("Ranked BR", "**Current:** " + rankedBrMap + " (Change in " + rankedBrTimer + ")", true);
+            mapEmbed.addField("Ranked Arenas", "**Current:** " + rankedArenasMap + " (Change in " + rankedArenasTimer + ")\n **Next:** " + rankedArenasNextMap + " (" + rankedArenasNextDuration + " minutes)", true);
+            mapEmbed.setFooter("Powered by https://apexlegendsapi.com");
+
+            event.getHook().sendMessageEmbeds(mapEmbed.build()).queue();
+        } else if (Objects.requireNonNull(event.getOption("subcommand")).getAsString().equals("Predator Requirements")) {
+            event.deferReply().queue();
+
+            String predatorLink = "https://api.mozambiquehe.re/predator?auth=" + APEX_TOKEN;
+            HttpResponse<JsonNode> jsonNode = Unirest.get(predatorLink).asJson();
+            if (isError(jsonNode)) {
+                sendErrorMessage(jsonNode, event);
+                return;
+            }
+
+            JSONObject jsonResponse = jsonNode.getBody().getObject();
+            JSONObject predatorBr = jsonResponse.getJSONObject("RP");
+            JSONObject BrPC = predatorBr.getJSONObject("PC");
+            String PCValue = BrPC.getString("val");
+            String PCTotal = BrPC.getString("totalMastersAndPreds");
+            JSONObject BrPS4 = predatorBr.getJSONObject("PS4");
+            String PS4Value = BrPS4.getString("val");
+            String PS4Total = BrPS4.getString("totalMastersAndPreds");
+            JSONObject BrX1 = predatorBr.getJSONObject("X1");
+            String X1Value = BrX1.getString("val");
+            String X1Total = BrX1.getString("totalMastersAndPreds");
+            JSONObject BrSwitch = predatorBr.getJSONObject("SWITCH");
+            String switchValue = BrSwitch.getString("val");
+            String switchTotal = BrSwitch.getString("totalMastersAndPreds");
+            JSONObject predatorArenas = jsonResponse.getJSONObject("AP");
+            JSONObject ArenasPC = predatorArenas.getJSONObject("PC");
+            String PCArenasValue = ArenasPC.getString("val");
+            String PCArenasTotal = ArenasPC.getString("totalMastersAndPreds");
+            JSONObject ArenasPS4 = predatorArenas.getJSONObject("PS4");
+            String PS4ArenasValue = ArenasPS4.getString("val");
+            String PS4ArenasTotal = ArenasPS4.getString("totalMastersAndPreds");
+            JSONObject ArenasX1 = predatorArenas.getJSONObject("X1");
+            String X1ArenasValue = ArenasX1.getString("val");
+            String X1ArenasTotal = ArenasX1.getString("totalMastersAndPreds");
+            JSONObject ArenasSwitch = predatorArenas.getJSONObject("SWITCH");
+            String switchArenasValue = ArenasSwitch.getString("val");
+            String switchArenasTotal = ArenasSwitch.getString("totalMastersAndPreds");
+
+            EmbedBuilder predatorEmbed = new EmbedBuilder().setColor(EmbedUtils.EMBED_COLOR);
+            predatorEmbed.setTitle("Predator Requirements");
+            predatorEmbed.addField("Battle Royale", "**PC:** " + PCValue + " RP (" + PCTotal + " Predators) \n **PS4:** " + PS4Value + " RP (" + PS4Total + " Predators) \n **Xbox:** " + X1Value + " RP (" + X1Total + " Predators) \n **Switch:** " + switchValue + " RP (" + switchTotal + " Predators)", true);
+            predatorEmbed.addBlankField(true);
+            predatorEmbed.addField("Arenas", "**PC:** " + PCArenasValue + " RP (" + PCArenasTotal + " Predators) \n **PS4:** " + PS4ArenasValue + " RP (" + PS4ArenasTotal + " Predators) \n **Xbox:** " + X1ArenasValue + " RP (" + X1ArenasTotal + " Predators) \n **Switch:** " + switchArenasValue + " RP (" + switchArenasTotal + " Predators)", true);
+            predatorEmbed.setFooter("Powered by https://apexlegendsapi.com");
+
+            event.getHook().sendMessageEmbeds(predatorEmbed.build()).queue();
+        } else {
+            event.reply("That's not an option!").setEphemeral(true).queue();
         }
-        event.getHook().sendMessageEmbeds(createEmbed(jsonResponse)).queue();
     }
 
-    private void checkForError(HttpResponse<JsonNode> jsonResponse, String username) throws PlayerNotFoundException, PlayerNeverPlayedException, NullPointerException {
-        String apiTest = jsonResponse.getBody().toString();
-        if (apiTest.contains("from origin backup api") || apiTest.contains("Player not found. Try again?") || apiTest.contains("code 103 - skipping origin backup api")) {
-            throw new PlayerNotFoundException("Player not found: " + username);
-        } else if (apiTest.contains("Player exists but has never played Apex Legends")) {
-            throw new PlayerNeverPlayedException(username + "Has never player Apex Legends.");
-        } else if (username.contains(",")) {
-            throw new NullPointerException();
-        }
-    }
-
-    private MessageEmbed createEmbed(HttpResponse<JsonNode> jsonResponse) {
-        JSONObject jsonData = jsonResponse.getBody().getObject();
-        EmbedBuilder dataEmbed = new EmbedBuilder()
-                .setColor(EmbedUtils.EMBED_COLOR)
-                .setFooter("Powered by https://apexlegendsapi.com")
-                .setTitle(jsonData.getJSONObject("global").get("name").toString())
-                .setThumbnail(jsonData.getJSONObject("global").getJSONObject("rank").get("rankImg").toString())
-                .addField("Level", jsonData.getJSONObject("global").get("level").toString(), true)
-                .addField("Rank", jsonData.getJSONObject("global").getJSONObject("rank").get("rankName").toString() + " " + jsonData.getJSONObject("global").getJSONObject("rank").get("rankDiv").toString(), true)
-                .addField("Selected Legend", jsonData.getJSONObject("realtime").get("selectedLegend").toString(), false);
+    private boolean isError(HttpResponse<JsonNode> jsonNode) {
         try {
-            for (int i = 0; i < 3; i++) {
-                dataEmbed.addField(EmbedUtils.toTitleCase(jsonData.getJSONObject("legends").getJSONObject("selected").getJSONArray("data").getJSONObject(i).get("name").toString()), jsonData.getJSONObject("legends").getJSONObject("selected").getJSONArray("data").getJSONObject(i).get("value").toString(), true);
-            }
-            dataEmbed.setImage(jsonData.getJSONObject("legends").getJSONObject("selected").getJSONObject("ImgAssets").get("banner").toString());
-        } catch (JSONException jsonException) {
-            dataEmbed.setImage(jsonData.getJSONObject("legends").getJSONObject("selected").getJSONObject("ImgAssets").get("banner").toString());
+            jsonNode.getBody().getObject().get("Error");
+            return true;
+        } catch (JSONException exception) {
+            return false;
         }
-        return dataEmbed.build();
+    }
+
+    private void sendErrorMessage(HttpResponse<JsonNode> jsonNode, SlashCommandInteractionEvent event) {
+        String message = jsonNode.getBody().getObject().getString("Error");
+        EmbedBuilder errorEmbed = new EmbedBuilder().setColor(EmbedUtils.EMBED_COLOR);
+        errorEmbed.setTitle("Error");
+        errorEmbed.setDescription(message);
+        event.getHook().sendMessageEmbeds(errorEmbed.build()).queue();
     }
 }
