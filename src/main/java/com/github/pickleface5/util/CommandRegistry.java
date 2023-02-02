@@ -55,8 +55,8 @@ public class CommandRegistry {
         registerSlashCommand(Commands.slash("minecraft", "Shows a minecraft servers info, such as current players, version, and time.")
                 .addOption(OptionType.STRING, "address", "The Minecraft server IP address.", true)
                 .addOption(OptionType.BOOLEAN, "bedrock", "If the server is on Minecraft: Bedrock, select this as true."), new MinecraftCommand());
-        registerSlashCommand(Commands.slash("ben", "Asks Ben the Talking Dog a question of your choice.")
-                .addOption(OptionType.STRING, "question", "Your question for the almighty Ben.", true), new BenCommand());
+        //registerSlashCommand(Commands.slash("ben", "Asks Ben the Talking Dog a question of your choice.")
+                //.addOption(OptionType.STRING, "question", "Your question for the almighty Ben.", true), new BenCommand());
     }
 
     // It's a bad idea to use the bots name, but it's okay since it will never get renamed. Ever.
