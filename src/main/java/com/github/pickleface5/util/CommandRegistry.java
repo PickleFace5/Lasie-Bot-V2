@@ -30,7 +30,8 @@ public class CommandRegistry {
         registerSlashCommand("members", "Returns a count of members in the server.", new MembersCommand());
         registerSlashCommand(Commands.slash("apex", "Returns the stats of an Apex Legends player.")
                 .addOption(OptionType.STRING, "subcommand", "Username of the Apex Legends player you want to look up.", true, true)
-                .addOption(OptionType.STRING, "username", "Enter username here. (For player statistics only, leave blank otherwise)"), new ApexCommand());
+                .addOption(OptionType.STRING, "username", "Enter username here. (For player statistics only, leave blank otherwise)")
+                .addOption(OptionType.STRING, "uid", "Enter player UID here. (REQUIRED for switch players for player stats.)"), new ApexCommand());
         registerSlashCommand("join", "Joins your current voice channel.", new JoinCommand());
         registerSlashCommand("leave", "Leaves the voice channel the bot is connected to.", new LeaveCommand());
         registerSlashCommand(Commands.slash("play", "Plays audio in your voice channel.")

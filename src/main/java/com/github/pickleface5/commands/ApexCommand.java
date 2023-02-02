@@ -30,7 +30,7 @@ public class ApexCommand extends ListenerAdapter {
 
     @Override
     public void onCommandAutoCompleteInteraction(CommandAutoCompleteInteractionEvent event) {
-        if (event.getName().equals("apex") && event.getFocusedOption().getName().equals("subcommand")) {
+        if (event.getName().equals("apex") && event.getFocusedOption().getName().equals("subcommand")) { // (Yes, this is taken from the jda docs :p)
             List<Command.Choice> options = Stream.of(OPTIONS)
                     .filter(word -> word.startsWith(event.getFocusedOption().getValue())) // only display words that start with the user's current input
                     .map(word -> new Command.Choice(word, word)) // map the words to choices
@@ -43,29 +43,55 @@ public class ApexCommand extends ListenerAdapter {
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if (!event.getName().equals("apex")) return;
         if (Objects.requireNonNull(event.getOption("subcommand")).getAsString().equals("Player Statistics")) {
-            // Get Player stats (PC -> PS4 -> X1 -> ok you can't get switches stats via usernames... but you can still use their uid to get their stats... but the nameToUID call doesn't support switch? >.>))
             String playerUsername;
+            String playerUID = null;
             try {
                 playerUsername = Objects.requireNonNull(event.getOption("username")).getAsString();
             } catch (NullPointerException exception) {
-                event.reply("You need to specify a username!").setEphemeral(true).queue();
-                return;
+                playerUsername = null;
+                try {
+                    playerUID = Objects.requireNonNull(event.getOption("uid")).getAsString();
+                } catch (NullPointerException exception1) {
+                    event.reply("You need to specify a username or UID!").setEphemeral(true).queue();
+                    return;
+                }
             }
             event.deferReply(false).queue();
-            String jsonPlayerStatsPrefix = "https://api.mozambiquehe.re/bridge?auth=" + APEX_TOKEN + "&player=" + playerUsername + "&platform=";
             HttpResponse<JsonNode> jsonResponse = null;
             String playerPlatform = "";
-            for (int i = 0; i < Platforms.values().length; i++) {
-                playerPlatform = Platforms.values()[i].toString();
-                logger.info("Searching player {} on {}...", playerUsername, playerPlatform);
-                jsonResponse = Unirest.get(jsonPlayerStatsPrefix + playerPlatform).asJson();
+            String jsonPlayerStatsPrefix;
+            boolean isError = false;
+            if (playerUsername != null) {
+                jsonPlayerStatsPrefix = "https://api.mozambiquehe.re/bridge?auth=" + APEX_TOKEN + "&player=" + playerUsername + "&platform=";
+                for (int i = 0; i < Platforms.values().length - 1; i++) {
+                    playerPlatform = Platforms.values()[i].toString();
+                    logger.debug("Searching player {} on {}...", playerUsername, playerPlatform);
+                    jsonResponse = Unirest.get(jsonPlayerStatsPrefix + playerPlatform).asJson();
+                    if (isError(jsonResponse)) {
+                        if (i == Platforms.values().length) isError = true;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                jsonPlayerStatsPrefix = "https://api.mozambiquehe.re/bridge?auth=" + APEX_TOKEN + "&uid=" + playerUID + "&platform=";
+                for (int i = 0; i < Platforms.values().length; i++) {
+                    playerPlatform = Platforms.values()[i].toString();
+                    logger.debug("Searching player {} on {}...", playerUID, playerPlatform);
+                    jsonResponse = Unirest.get(jsonPlayerStatsPrefix + playerPlatform).asJson();
+                    if (isError(jsonResponse)) {
+                        if (i == Platforms.values().length) isError = true;
+                    } else {
+                        break;
+                    }
+                }
             }
             assert jsonResponse != null;
-            if (isError(jsonResponse)) {
+            if (isError) {
                 sendErrorMessage(jsonResponse, event);
                 return;
             } else {
-                logger.info("Player stats found on {}", playerPlatform);
+                logger.debug("Player stats found on {}", playerPlatform);
                 logger.trace("({})", jsonPlayerStatsPrefix + playerPlatform);
             }
 
@@ -73,16 +99,12 @@ public class ApexCommand extends ListenerAdapter {
             JSONObject playerGlobalStats = jsonResponse.getBody().getObject().getJSONObject("global");
             JSONObject playerRealtimeStats = jsonResponse.getBody().getObject().getJSONObject("realtime");
             JSONArray playerLegendData = jsonResponse.getBody().getObject().getJSONObject("legends").getJSONObject("selected").getJSONArray("data");
+            playerUsername = playerGlobalStats.getString("name");
             String playerLevel = playerGlobalStats.getString("level");
-            logger.trace("Level: {}", playerLevel);
             String playerNextLevel = playerGlobalStats.getString("toNextLevelPercent");
-            logger.trace("To Next Level %: {}", playerNextLevel);
-            String playerUID = playerGlobalStats.getString("uid");
-            logger.trace("UID: {}", playerUID);
+            String playerEmbedUID = playerGlobalStats.getString("uid");
             String playerSelectedLegend = playerRealtimeStats.getString("selectedLegend");
-            logger.trace("Selected Legend: {}", playerSelectedLegend);
             String currentState = playerRealtimeStats.getString("currentStateAsText");
-            logger.trace("Current State: {}", currentState);
             JSONObject battleRoyaleStats = playerGlobalStats.getJSONObject("rank");
             String normalRankName = battleRoyaleStats.getString("rankName");
             String normalRankDiv = battleRoyaleStats.getString("rankDiv");
@@ -109,7 +131,7 @@ public class ApexCommand extends ListenerAdapter {
                 }
             } catch (JSONException ignored) {
             } // There isn't always 3 stats (can have none), so we just continue if it can't find 3.
-            statsEmbed.setFooter("Player UID: " + playerUID + "\nPowered by https://apexlegendsapi.com");
+            statsEmbed.setFooter("Player UID: " + playerEmbedUID + "\nPowered by https://apexlegendsapi.com");
 
             event.getHook().sendMessageEmbeds(statsEmbed.build()).queue();
         } else if (Objects.requireNonNull(event.getOption("subcommand")).getAsString().equals("Map Rotation")) {
@@ -121,7 +143,6 @@ public class ApexCommand extends ListenerAdapter {
                 sendErrorMessage(jsonNode, event);
                 return;
             }
-            logger.trace(jsonResponse.toString());
 
             JSONObject battleRoyaleMap = jsonResponse.getJSONObject("battle_royale");
             JSONObject brCurrent = battleRoyaleMap.getJSONObject("current");
