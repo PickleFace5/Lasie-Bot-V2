@@ -1,6 +1,5 @@
 package com.github.pickleface5.commands;
 
-import com.github.pickleface5.commands.apex.Platforms;
 import com.github.pickleface5.util.EmbedUtils;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
@@ -21,6 +20,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+enum Platforms {
+    PC,
+    PS4,
+    X1,
+    SWITCH
+}
 
 public class ApexCommand extends ListenerAdapter {
 
