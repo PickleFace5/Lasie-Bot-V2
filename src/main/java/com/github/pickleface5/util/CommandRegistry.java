@@ -43,12 +43,8 @@ public class CommandRegistry {
         registerSlashCommand("resume", "Resumes the current song.", new ResumeCommand());
         registerSlashCommand("loop", "Toggles looping the current track.", new LoopCommand());
         registerSlashCommand("skip", "Allows you to skip the song when your alone in voice.", new SkipCommand());
-        try {
-            registerSlashCommand(Commands.slash("chad", "Turns you into a gigachad.")
-                    .addOption(OptionType.USER, "user", "The user to want to make a **king**", false), new ChadPfpCommand());
-        } catch (IOException e) {
-            LOGGER.error("chad could not be registered: IOException returned.");
-        }
+        registerSlashCommand(Commands.slash("chad", "Turns you into a gigachad.")
+                .addOption(OptionType.USER, "user", "The user to want to make a **king**", false), new ChadPfpCommand());
         registerSlashCommand("abstract", "Creates randomly generated abstract art.", new AbstractCommand());
         registerSlashCommand(Commands.slash("pfpgrabber", "Grabs a users profile photo.")
                 .addOption(OptionType.USER, "user", "The user profile photo you want to grab."), new PfpGrabberCommand());

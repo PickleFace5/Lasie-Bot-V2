@@ -16,6 +16,7 @@ import javax.imageio.stream.FileImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Objects;
@@ -23,23 +24,17 @@ import java.util.Objects;
 public class ChadPfpCommand extends ListenerAdapter {
     BufferedImage gigachad;
 
-    public ChadPfpCommand() throws IOException {
-        gigachad = ImageIO.read(Objects.requireNonNull(this.getClass().getClassLoader().getResource("imaging/chad/gigachad.png")));
+    public ChadPfpCommand() {
+        try {
+            gigachad = ImageIO.read(Objects.requireNonNull(this.getClass().getClassLoader().getResource("imaging/chad/gigachad.png")));
+        } catch (IOException ignored) { }
     }
 
     @Override
-    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) { // TODO: optimize + add more variations (see roadmap)
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) { // TODO: Add more variations (see roadmap)
         if (!(event.getName().equals("chad"))) return;
-        User user;
-        try {
-            user = Objects.requireNonNull(event.getOption("user")).getAsUser();
-        } catch (NullPointerException e) {
-            user = event.getUser();
-        }
-        if (!(event.getOption("user") == null)) {
-            user = Objects.requireNonNull(event.getOption("user")).getAsUser();
-        }
         event.deferReply().queue();
+        User user = event.getOption("user") == null ? event.getUser() : Objects.requireNonNull(event.getOption("user")).getAsUser();
         try {
             URL url = new URL(Objects.requireNonNull(user.getAvatarUrl()));
             URLConnection openConnection = url.openConnection();
@@ -86,8 +81,8 @@ public class ChadPfpCommand extends ListenerAdapter {
             ImageIO.write(gigachad, "png", new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + user.getId() + "_final.png"));
         } catch (IOException | NullPointerException e) {
             event.getHook().sendMessage("There was an error while downloading your profile photo! " +
-                    "Make sure you have a custom profile photo, not an discord profile photo. If it *still* doesn't " +
-                    "work for you, it's an issue on our end").queue();
+                    "Make sure you have a custom profile photo, not an discord profile photo. If it still doesn't " +
+                    "work for you, report it to Pickle_Face5#5262").queue();
             e.printStackTrace();
             return;
         }
