@@ -16,15 +16,16 @@ import javax.imageio.stream.FileImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Objects;
+import java.util.Random;
 
-public class ChadPfpCommand extends ListenerAdapter {
+public class ChadCommand extends ListenerAdapter {
     BufferedImage gigachad;
+    String[] footerStrings = {"'Absolute chad.'", "'Sigma male.'", "'Certified chad.'"};
 
-    public ChadPfpCommand() {
+    public ChadCommand() {
         try {
             gigachad = ImageIO.read(Objects.requireNonNull(this.getClass().getClassLoader().getResource("imaging/chad/gigachad.png")));
         } catch (IOException ignored) { }
@@ -38,7 +39,6 @@ public class ChadPfpCommand extends ListenerAdapter {
         try {
             URL url = new URL(Objects.requireNonNull(user.getAvatarUrl()));
             URLConnection openConnection = url.openConnection();
-
             try {
                 openConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
                 openConnection.connect();
@@ -86,13 +86,13 @@ public class ChadPfpCommand extends ListenerAdapter {
             e.printStackTrace();
             return;
         }
-        EmbedBuilder embed = new EmbedBuilder();
-        embed.setImage("attachment://gigachad.png");
-        event.getHook().sendMessageEmbeds(embed
-                        .setTitle("Nice pic, king. :crown:")
-                        .setColor(EmbedUtils.EMBED_COLOR)
-                        .setFooter("'Absolute chad.'")
-                        .build())
+        EmbedBuilder embed = new EmbedBuilder()
+                .setTitle("Nice pic, king. :crown:")
+                .setColor(EmbedUtils.EMBED_COLOR)
+                .setImage("attachment://gigachad.png");
+        int index = new Random().nextInt(footerStrings.length);
+        embed.setFooter(footerStrings[index]);
+        event.getHook().sendMessageEmbeds(embed.build())
                 .addFiles(FileUpload.fromData(new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + user.getId() + "_final.png"), "gigachad.png"))
                 .queue();
     }

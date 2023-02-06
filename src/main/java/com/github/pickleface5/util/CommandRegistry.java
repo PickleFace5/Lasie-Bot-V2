@@ -3,7 +3,7 @@ package com.github.pickleface5.util;
 import com.github.pickleface5.Main;
 import com.github.pickleface5.commands.*;
 import com.github.pickleface5.commands.imaging.AbstractCommand;
-import com.github.pickleface5.commands.imaging.ChadPfpCommand;
+import com.github.pickleface5.commands.imaging.ChadCommand;
 import com.github.pickleface5.commands.imaging.PfpGrabberCommand;
 import com.github.pickleface5.commands.music.*;
 import com.github.pickleface5.logging.ServerChecker;
@@ -43,7 +43,7 @@ public class CommandRegistry {
         registerSlashCommand("loop", "Toggles looping the current track.", new LoopCommand());
         registerSlashCommand("skip", "Allows you to skip the song when your alone in voice.", new SkipCommand());
         registerSlashCommand(Commands.slash("chad", "Turns you into a gigachad.")
-                .addOption(OptionType.USER, "user", "The user to want to make a **king**", false), new ChadPfpCommand());
+                .addOption(OptionType.USER, "user", "The user to want to make a **king**", false), new ChadCommand());
         registerSlashCommand("abstract", "Creates randomly generated abstract art.", new AbstractCommand());
         registerSlashCommand(Commands.slash("pfpgrabber", "Grabs a users profile photo.")
                 .addOption(OptionType.USER, "user", "The user profile photo you want to grab."), new PfpGrabberCommand());
