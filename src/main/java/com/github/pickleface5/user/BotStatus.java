@@ -41,7 +41,10 @@ public class BotStatus { //TODO: Automatically get list(?) (see roadmap)
             "Garry's Mod", "XCOM", "XCOM 2", "XCOM EW", "Dark Tide", "Vermintide", "Vermintide 2", "Goat Simulator 3",
             "TABS", "War Thunder", "OMORI", "Cool Math Games", "Cut The Rope", "Angry Birds", "Subway Surfers",
             "Smashy Road: Wanted", "Smashy Road 2", "TETRIS 99", "Chess", "Bloons TD Battles", "Fallout Shelter",
-            "SIMS 4", "Google Snake", "PAC-MAN", "Beat Saber", "The Geneva Conventions of August 12th, 1949"};
+            "SIMS 4", "Google Snake", "PAC-MAN", "Beat Saber", "The Geneva Conventions of August 12th, 1949", "Crush Crush", 
+            "Blush Blush", "Conan Exiles", "Checkers", "Sex With Hitler", "Sex With Stalin", "5D Chess", "FPS Chess", 
+            "Doki Doki Literature Club", "The Bible", "Sea of Thieves", "Warhammer 40,000", "Fallout 4", "Starfield", 
+            "SCP: Secret Laboratory", "Sons Of The Forest", "Wallpaper Engine", "Blender"};
 
     private static final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
