@@ -79,9 +79,9 @@ public class MinecraftCommand extends ListenerAdapter {
         }
 
         if (jsonResponse.getBody().getObject().has("plugins")) {
-            serverInfoEmbed.addField("", jsonResponse.getBody().getObject().getJSONObject("plugins").getJSONArray("raw").length() + " plugins active", false);
+            serverInfoEmbed.addField("", jsonResponse.getBody().getObject().getJSONObject("plugins").getJSONObject("raw").length() + " plugins active", false);
         } else if (jsonResponse.getBody().getObject().has("mods")) {
-            serverInfoEmbed.addField("", jsonResponse.getBody().getObject().getJSONObject("mods").getJSONArray("raw").length() + " mods active", false);
+            serverInfoEmbed.addField("", jsonResponse.getBody().getObject().getJSONObject("mods").getJSONObject("raw").length() + " mods active", false);
         } else {
             serverInfoEmbed.addField("", "No plugins/mods detected", false);
         }

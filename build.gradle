@@ -34,11 +34,14 @@ repositories {
     maven {
         url 'https://repo1.maven.org/maven2/org/slf4j/slf4j-api/'
     }
+    maven {
+        url 'https://jitpack.io'
+    }
 }
 
 dependencies {
-    implementation 'com.konghq:unirest-java:3.14.1'
-    implementation 'com.sedmelluq:lavaplayer:1.3.78'
-    implementation("net.dv8tion:JDA:5.0.0-beta.3")
+    implementation 'com.konghq:unirest-java:3.14.2'
+    implementation 'com.github.walkyst:lavaplayer-fork:1.4.1'
+    implementation("net.dv8tion:JDA:5.0.0-beta.9")
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.17.2'
 }
