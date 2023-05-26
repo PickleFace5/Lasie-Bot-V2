@@ -52,6 +52,8 @@ public class CommandRegistry {
                 .addOption(OptionType.BOOLEAN, "bedrock", "If the server is on Minecraft: Bedrock, select this as true."), new MinecraftCommand());
         //registerSlashCommand(Commands.slash("ben", "Asks Ben the Talking Dog a question of your choice.")
                 //.addOption(OptionType.STRING, "question", "Your question for the almighty Ben.", true), new BenCommand());
+        registerSlashCommand(Commands.slash("tictactoe", "Play Tic Tac Toe against someone.")
+                .addOption(OptionType.USER, "opponent", "Opponent you want to play.", true), new TicTacToeCommand());
     }
 
     // It's a bad idea to use the bots name, but it's okay since it will never get renamed. Ever.
@@ -84,7 +86,13 @@ public class CommandRegistry {
         LOGGER.info("Added Slash Command {} to {}", commandData.getName(), Main.JDA.getSelfUser().getName());
     }
 
-    private static void registerEventListener(ListenerAdapter listener) {
+    public static void registerEventListener(ListenerAdapter listener) {
         Main.JDA.addEventListener(listener);
+        LOGGER.debug("Added EventListener {} to {}", listener.getClass().getName(), Main.JDA.getSelfUser().getName());
+    }
+
+    public static void removeEventListener(ListenerAdapter listener) {
+        Main.JDA.removeEventListener(listener);
+        LOGGER.debug("Removed EventListener {}", listener.getClass().getName());
     }
 }
