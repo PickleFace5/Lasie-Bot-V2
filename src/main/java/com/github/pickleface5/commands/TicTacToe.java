@@ -142,9 +142,9 @@ public class TicTacToe extends ListenerAdapter {
     public void onButtonInteraction(ButtonInteractionEvent event) {
         if (event.getComponentId().equals("TTTResign")) {
             if (event.getUser().equals(this.player2)) {
-                endGame(this.player2.getName() + " has resigned, **" + this.player1.getName() + " wins!!!**").queue();
+                endGame(this.player2.getName() + " has resigned, **" + this.player1.getName() + " wins!!!**");
             } else if (event.getUser().equals(this.player1)) {
-                endGame(this.player1.getName() + " has resigned, **" + this.player2.getName() + " wins!!!**").queue();
+                endGame(this.player1.getName() + " has resigned, **" + this.player2.getName() + " wins!!!**");
             } else {
                 event.reply("This isn't your game!").setEphemeral(true).queue();
             }
