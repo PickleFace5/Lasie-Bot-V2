@@ -142,11 +142,12 @@ public class TicTacToe extends ListenerAdapter {
     public void onButtonInteraction(ButtonInteractionEvent event) {
         if (event.getComponentId().equals("TTTResign")) {
             if (event.getUser().equals(this.player2)) {
-                event.reply(this.player2.getName() + " has resigned, **" + this.player1.getName() + " wins!!!**").queue();
+                endGame(this.player2.getName() + " has resigned, **" + this.player1.getName() + " wins!!!**");
+            } else if (event.getUser().equals(this.player1)) {
+                endGame(this.player1.getName() + " has resigned, **" + this.player2.getName() + " wins!!!**");
             } else {
-                event.reply(this.player1.getName() + " has resigned, **" + this.player2.getName() + " wins!!!**").queue();
+                event.reply("This isn't your game!").setEphemeral(true).queue();
             }
-            this.gameOver = true;
         } else if (event.getComponentId().equals("TTTHelp")) {
             event.reply("To take your turn, select a number between 1 and 9. The order goes from top to bottom, left to right (1 is top left, 2 is top center, 9 is bottom right, etc). *The player who ran the /tictactoe command goes first.*").setEphemeral(true).queue();
         }
