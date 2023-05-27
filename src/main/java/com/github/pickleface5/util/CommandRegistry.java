@@ -6,6 +6,7 @@ import com.github.pickleface5.commands.imaging.AbstractCommand;
 import com.github.pickleface5.commands.imaging.ChadCommand;
 import com.github.pickleface5.commands.imaging.PfpGrabberCommand;
 import com.github.pickleface5.commands.music.*;
+import com.github.pickleface5.commands.tictactoe.TicTacToeCommand;
 import com.github.pickleface5.logging.ServerChecker;
 import com.github.pickleface5.music.VoiceChannelDisconnectIfAlone;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;

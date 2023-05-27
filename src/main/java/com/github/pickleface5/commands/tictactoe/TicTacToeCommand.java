@@ -1,4 +1,4 @@
-package com.github.pickleface5.commands;
+package com.github.pickleface5.commands.tictactoe;
 
 import com.github.pickleface5.util.CommandRegistry;
 import net.dv8tion.jda.api.entities.User;
@@ -6,14 +6,10 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.Objects;
 
 public class TicTacToeCommand extends ListenerAdapter {
-    static final Logger LOGGER = LogManager.getLogger(TicTacToeCommand.class);
-
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if (!event.getName().equals("tictactoe")) return;
