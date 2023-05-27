@@ -1,5 +1,6 @@
 package com.github.pickleface5.commands.music;
 
+import com.github.pickleface5.util.MusicUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
@@ -32,6 +33,7 @@ public class LeaveCommand extends ListenerAdapter {
             event.reply("Only people who are alone in a voice channel or have permissions to move members can use this command!").queue();
             return;
         }
+        MusicUtils.getGuildAudioPlayer(event.getGuild()).close();
         guild.getAudioManager().closeAudioConnection();
         event.reply(":white_check_mark:").queue();
     }

@@ -20,6 +20,7 @@ public class TrackScheduler extends AudioEventAdapter {
         this.isLooping = false;
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
+        this.skipVotes = new ArrayList<>();
     }
 
     public void queue(AudioTrack track) {
@@ -75,5 +76,11 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public void clearSkipVotes() {
         skipVotes.clear();
+    }
+
+    public void close() {
+        clearSkipVotes();
+        setIsLooping(false);
+        clearQueue();
     }
 }

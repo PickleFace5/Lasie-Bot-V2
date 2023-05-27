@@ -12,9 +12,10 @@ public class VoiceChannelDisconnectIfAlone extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
-        assert event.getChannelLeft() != null;
-        if (event.getChannelLeft().getType().equals(ChannelType.VOICE)) {
-            leaveIfAlone(event.getChannelLeft().asVoiceChannel());
+        if (event.getChannelLeft() != null) {
+            if (event.getChannelLeft().getType().equals(ChannelType.VOICE)) {
+                leaveIfAlone(event.getChannelLeft().asVoiceChannel());
+            }
         }
     }
 
@@ -22,12 +23,8 @@ public class VoiceChannelDisconnectIfAlone extends ListenerAdapter {
     private void leaveIfAlone(AudioChannel voiceChannel) {
         if (voiceChannel.getMembers().isEmpty()) return;
         if (voiceChannel.getMembers().size() <= 1 && voiceChannel.getMembers().get(0).getUser().getId().equals(Main.BOT_USER_ID)) {
-            MusicUtils.getGuildAudioPlayer(voiceChannel.getGuild()).scheduler.clearQueue();
-            MusicUtils.getGuildAudioPlayer(voiceChannel.getGuild()).player.destroy();
-            MusicUtils.getGuildAudioPlayer(voiceChannel.getGuild()).scheduler.setIsLooping(false);
+            MusicUtils.getGuildAudioPlayer(voiceChannel.getGuild()).close();
             voiceChannel.getGuild().getAudioManager().closeAudioConnection();
         }
     }
-
-
 }

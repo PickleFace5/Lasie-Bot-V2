@@ -33,4 +33,9 @@ public class GuildMusicManager {
     public TrackScheduler getTrackScheduler() {
         return scheduler;
     }
+
+    public void close() {
+        this.getTrackScheduler().close();
+        player.destroy();
+    }
 }

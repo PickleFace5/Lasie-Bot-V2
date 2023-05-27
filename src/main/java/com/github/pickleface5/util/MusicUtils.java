@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,7 +73,8 @@ public class MusicUtils {
                 channel.sendMessageEmbeds(new EmbedBuilder()
                         .setColor(EmbedUtils.EMBED_COLOR)
                         .setTitle("Adding to queue")
-                        .setDescription("[" + title + "](" + track.getInfo().uri + ")")
+                        .setDescription("[" + title + "](" + track.getInfo().uri + ") (" + getDurationString(track.getDuration()) + ")"
+                        )
                         .setThumbnail("https://img.youtube.com/vi/" + extractVideoIdFromUrl(track.getInfo().uri) + "/mqdefault.jpg")
                         .setFooter("Added by " + user.getName(), user.getAvatarUrl())
                         .build()).queue();
@@ -139,5 +141,13 @@ public class MusicUtils {
             return url.replace(matcher.group(), "");
         }
         return url;
+    }
+
+    public static String getDurationString(long millis) {
+        return String.format("%d:%d",
+                TimeUnit.MILLISECONDS.toMinutes(millis),
+                TimeUnit.MILLISECONDS.toSeconds(millis) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+        );
     }
 }

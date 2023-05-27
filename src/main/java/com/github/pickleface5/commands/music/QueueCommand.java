@@ -46,16 +46,18 @@ public class QueueCommand extends ListenerAdapter {
             Object[] audioTrack = guildQueue.toArray();
             if (i == 0) {
                 if (title.equals("Unknown title")) {
-                    messageEmbed.addField("Now Playing", "[" + uri + "](" + uri + ")", false);
+                    messageEmbed.addField("Next In Queue", "[" + uri + "](" + uri + ") (" + MusicUtils.getDurationString(((DelegatedAudioTrack) audioTrack[i]).getDuration()) + ")", false);
                 } else {
-                    messageEmbed.addField("Now Playing", "[" + title + "](" + uri + ")", false);
+                    messageEmbed.addField("Next In Queue", "[" + title + "](" + uri + ") (" + MusicUtils.getDurationString(((DelegatedAudioTrack) audioTrack[i]).getDuration()) + ")", false);
                 }
             }
             else if (audioTrack[i] instanceof DelegatedAudioTrack) {
                 if (((DelegatedAudioTrack) audioTrack[i]).getInfo().title.equals("Unknown title")) {
-                    messageEmbed.addField("#" + (i + 1), "[" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + "](" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + ")", false);
+                    messageEmbed.addField("#" + (i + 2), "[" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + "](" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + ") (" + MusicUtils.getDurationString(((DelegatedAudioTrack) audioTrack[i]).getDuration()) + ")", false);
                 }
-                messageEmbed.addField("#" + (i + 1), "[" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().title + "](" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + ")", false);
+                else {
+                    messageEmbed.addField("#" + (i + 2), "[" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().title + "](" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + ") (" + MusicUtils.getDurationString(((DelegatedAudioTrack) audioTrack[i]).getDuration()) + ")", false);
+                }
             }
             else messageEmbed.addField("Unknown Error", "Unknown Error", false);
         }
