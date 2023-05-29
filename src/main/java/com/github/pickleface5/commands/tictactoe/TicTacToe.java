@@ -12,18 +12,24 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 enum Tiles {
-    PLAYER_ONE(":regional_indicator_x:"),
-    PLAYER_TWO(":o2:"),
-    EMPTY(":orange_square:");
+    PLAYER_ONE(1, ":regional_indicator_x:"),
+    PLAYER_TWO(2, ":o2:"),
+    EMPTY(0, ":orange_square:");
 
     private final String emoji;
+    private final int id;
 
-    Tiles(String emoji) {
+    Tiles(int id, String emoji) {
         this.emoji = emoji;
+        this.id = id;
     }
 
     public String getEmoji() {
         return this.emoji;
+    }
+
+    public int getId() {
+        return this.id;
     }
 }
 
@@ -162,14 +168,8 @@ public class TicTacToe extends ListenerAdapter {
     // lil secret (plus no one wants to help debug a discord bot lol)
     void lasieTurn() {
         if (!(checkForWin() == null)) return;
-        Random random = new Random();
-        for (int i = 0; i < 9; i++) {
-            int index = random.nextInt(table.size());
-            if (this.table.get(index).equals(Tiles.EMPTY.getEmoji())) {
-                this.table.set(index, Tiles.PLAYER_TWO.getEmoji());
-                break;
-            }
-        }
+        int index = TicTacToeAutoPlay.takeTurn(table);
+        if (index != -1) this.table.set(index, Tiles.PLAYER_TWO.getEmoji());
         this.updateTable();
     }
 

@@ -16,6 +16,11 @@ public class TicTacToeCommand extends ListenerAdapter {
 
         User opponent = Objects.requireNonNull(event.getOption("opponent")).getAsUser();
 
+        if (event.getUser().equals(opponent)) {
+            event.reply("You can't play against yourself!").setEphemeral(true).queue();
+            return;
+        }
+
         CommandRegistry.registerEventListener(new TicTacToe(event.getHook(), event.getUser(), opponent));
 
         event.reply("**Game Started**: *" + event.getUser().getName() + "* VS *" + opponent.getName() + "*!!!")
