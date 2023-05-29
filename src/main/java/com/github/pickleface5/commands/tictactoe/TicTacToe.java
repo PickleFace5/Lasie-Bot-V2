@@ -57,9 +57,10 @@ public class TicTacToe extends ListenerAdapter {
     // If we already have a game with the same players going, delete this instance.
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!(event.getName().equals("tictactoe") && event.getUser().equals(player1) && Objects.requireNonNull(event.getOption("opponent")).getAsUser().equals(player2)))
+        if (!event.getName().equals("tictactoe")) {
             return;
-        CommandRegistry.removeEventListener(this);
+        }
+        if (event.getUser().equals(player1) && Objects.requireNonNull(event.getOption("opponent")).getAsUser().equals(player2)) deleteGame();
     }
 
     void updateTable() {
@@ -72,6 +73,12 @@ public class TicTacToe extends ListenerAdapter {
         } else if (isDraw()) {
             endGame("It's a draw!");
         }
+    }
+
+    void deleteGame() {
+        this.hook.editOriginal("Game deleted: New game started between player 1 and 2").queue();
+        this.gameOver = true;
+        CommandRegistry.removeEventListener(this);
     }
 
     User checkForWin() {
@@ -175,10 +182,5 @@ public class TicTacToe extends ListenerAdapter {
 
     private boolean isInGame(User user) {
         return user.equals(this.player1) || user.equals(this.player2);
-    }
-
-    @NotNull
-    public Long[] getPlayers() {
-        return new Long[]{Long.parseLong(this.player1.getId()), Long.parseLong(this.player2.getId())};
     }
 }
