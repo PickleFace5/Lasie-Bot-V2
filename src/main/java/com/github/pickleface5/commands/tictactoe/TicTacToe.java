@@ -7,9 +7,11 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.InteractionHook;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Timer;
 
 enum Tiles {
     PLAYER_ONE(1, ":regional_indicator_x:"),
@@ -144,8 +146,8 @@ public class TicTacToe extends ListenerAdapter {
                 event.reply("It's not your turn!").setEphemeral(true).queue();
                 return;
             }
+            event.deferEdit().queue();
             this.updateTable();
-            event.reply("Nice move!").setEphemeral(true).queue();
         } else {
             event.reply("This isn't your game!").setEphemeral(true).queue();
         }
