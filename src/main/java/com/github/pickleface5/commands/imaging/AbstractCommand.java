@@ -3,8 +3,14 @@ package com.github.pickleface5.commands.imaging;
 import com.github.pickleface5.Main;
 import com.github.pickleface5.util.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.interaction.GenericInteractionCreateEvent;
+import net.dv8tion.jda.api.events.interaction.command.GenericCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.utils.FileUpload;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +33,39 @@ public class AbstractCommand extends ListenerAdapter { //TODO: Completely redo (
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("abstract")) return;
         event.deferReply().queue();
-        Random random = new Random(event.hashCode());
+
+        createImage(event.getUser());
+
+        event.getHook().sendMessageEmbeds(new EmbedBuilder()
+                .setTitle("Tada! How'd I do?")
+                .setImage("attachment://abstract.png")
+                .setColor(EmbedUtils.EMBED_COLOR)
+                .build())
+                .addFiles(FileUpload.fromData(new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + event.getUser().getId() + "_abstract.png"), "abstract.png"))
+                .addActionRow(Button.primary("AbstractRegen", "Regenerate"))
+                .queue();
+
+
+    }
+
+    @Override
+    public void onButtonInteraction(ButtonInteractionEvent event) {
+        if (!event.getComponentId().equals("AbstractRegen")) return;
+        createImage(event.getUser());
+        event.deferEdit().queue();
+
+        event.getHook().editOriginalEmbeds(new EmbedBuilder()
+                        .setTitle("Tada! How'd I do?")
+                        .setImage("attachment://abstract.png")
+                        .setColor(EmbedUtils.EMBED_COLOR)
+                        .build())
+                .setFiles(FileUpload.fromData(new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + event.getUser().getId() + "_abstract.png"), "abstract.png"))
+                .setActionRow(Button.primary("AbstractRegen", "Regenerate"))
+                .queue();
+    }
+
+    private void createImage(User user) {
+        Random random = new Random();
 
         Color backgroundColor = new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
 
@@ -77,18 +115,10 @@ public class AbstractCommand extends ListenerAdapter { //TODO: Completely redo (
 
         //Build, Save, then send image
         try {
-            ImageIO.write(img, "png", new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + event.getUser().getId() + "_abstract.png"));
+            ImageIO.write(img, "png", new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + user.getId() + "_abstract.png"));
         } catch (IOException e) {
-            event.getHook().sendMessage("There was an issue saving the file! The issue has been reported.").queue();
             e.printStackTrace();
         }
-        event.getHook().sendMessageEmbeds(new EmbedBuilder()
-                .setTitle("Tada! How'd I do?")
-                .setImage("attachment://abstract.png")
-                .setColor(EmbedUtils.EMBED_COLOR)
-                .build())
-                .addFiles(FileUpload.fromData(new File(Main.TEMP_DIRECTORY.getAbsolutePath() + "/" + event.getUser().getId() + "_abstract.png"), "abstract.png"))
-                .queue();
     }
 
     private static boolean ColorsAreClose(Color a, Color z)
