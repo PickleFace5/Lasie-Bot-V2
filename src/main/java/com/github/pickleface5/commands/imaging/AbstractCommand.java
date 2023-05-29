@@ -71,10 +71,12 @@ public class AbstractCommand extends ListenerAdapter { //TODO: Completely redo (
 
 
         // Create image with random background
-        BufferedImage img = new BufferedImage(1080, 1080, BufferedImage.TYPE_INT_RGB);
+        int width = 1920;
+        int height = 1080;
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D imgGraphics = img.createGraphics();
         imgGraphics.setBackground(backgroundColor);
-        int totalLines = random.nextInt(50);
+        int totalLines = random.nextInt(62) + 3;
 
         // DRAW SHAPES (100% chance, sides randomized (3-25), ranges from 1-5 shapes
         for (int i = 0; i < random.nextInt(5) + 1; i++) {
@@ -84,8 +86,8 @@ public class AbstractCommand extends ListenerAdapter { //TODO: Completely redo (
             int[] yPoly = new int[vertices];
 
             for (int j = 0; j < vertices; j++) {
-                xPoly[j] = random.nextInt(1080);
-                yPoly[j] = random.nextInt(1080);
+                xPoly[j] = random.nextInt(width);
+                yPoly[j] = random.nextInt(height);
             }
             imgGraphics.setColor(shapeColor);
             logger.trace("drawing shape {}", i);
@@ -101,14 +103,14 @@ public class AbstractCommand extends ListenerAdapter { //TODO: Completely redo (
                     continue;
                 }
                 imgGraphics.setColor(lineColor);
-                imgGraphics.setStroke(new BasicStroke(random.nextInt(35), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+                imgGraphics.setStroke(new BasicStroke(random.nextInt(24), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
                 if (random.nextInt(100) <= 33) {
-                    QuadCurve2D quadcurve = new QuadCurve2D.Float(random.nextInt(1080), random.nextInt(1080), random.nextInt(1080), random.nextInt(1080), random.nextInt(1080), random.nextInt(1080));
+                    QuadCurve2D quadcurve = new QuadCurve2D.Float(random.nextInt(width), random.nextInt(height), random.nextInt(width), random.nextInt(height), random.nextInt(width), random.nextInt(height));
                     imgGraphics.draw(quadcurve);
                 } else if (random.nextInt(100) <= 33) {
-                    drawSpring(random.nextInt(1080), random.nextInt(1080), random.nextInt(1080), random.nextInt(1080), random.nextInt(1080), random.nextInt(35), imgGraphics);
+                    drawSpring(random.nextInt(width), random.nextInt(height), random.nextInt(width), random.nextInt(height), random.nextInt(1080), random.nextInt(35), imgGraphics);
                 } else {
-                    imgGraphics.drawLine(random.nextInt(1080), random.nextInt(1080), random.nextInt(1080), random.nextInt(1080));
+                    imgGraphics.drawLine(random.nextInt(width), random.nextInt(height), random.nextInt(width), random.nextInt(height));
                 }
             }
         }
