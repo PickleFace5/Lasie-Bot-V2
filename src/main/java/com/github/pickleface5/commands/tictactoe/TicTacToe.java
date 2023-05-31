@@ -8,6 +8,8 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.InteractionHook;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,6 +39,8 @@ enum Tiles {
 }
 
 public class TicTacToe extends ListenerAdapter {
+    private static final Logger LOGGER = LogManager.getLogger(TicTacToe.class);
+
     InteractionHook hook;
     User player1;
     User player2;
@@ -69,9 +73,7 @@ public class TicTacToe extends ListenerAdapter {
     // If we already have a game with the same players going, delete this instance.
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("tictactoe")) {
-            return;
-        }
+        if (!event.getName().equals("tictactoe")) return;
         if (event.getUser().equals(player1) && Objects.requireNonNull(event.getOption("opponent")).getAsUser().equals(player2)) deleteGame();
     }
 
@@ -91,7 +93,11 @@ public class TicTacToe extends ListenerAdapter {
     void deleteGame() {
         this.hook.editOriginal("Game deleted: New game started between player 1 and 2").queue();
         this.gameOver = true;
-        CommandRegistry.removeEventListener(this);
+        try {
+            CommandRegistry.removeEventListener(this);
+        } catch (IllegalArgumentException ignored) {
+            LOGGER.debug("EventListener for \"{} ||| {}\" is already deleted, ignoring...", this.player1.getId(), this.player2.getId());
+        }
     }
 
     User checkForWin() {
