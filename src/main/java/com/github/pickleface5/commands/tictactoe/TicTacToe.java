@@ -175,7 +175,7 @@ public class TicTacToe extends ListenerAdapter {
                 event.reply("This isn't your game!").setEphemeral(true).queue();
             }
         } else if (event.getComponentId().equals("TTTHelp")) {
-            event.reply("To take your turn, select a number between 1 and 9. The order goes from top to bottom, left to right (1 is top left, 2 is top center, 9 is bottom right, etc). *The player who ran the /tictactoe command goes first.*").setEphemeral(true).queue();
+            event.reply("To take your turn, select a number between 1 and 9. The order goes from top to bottom, left to right (1 is top left, 2 is top center, 9 is bottom right, etc).").setEphemeral(true).queue();
         }
     }
 
