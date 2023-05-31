@@ -15,13 +15,18 @@ public class TicTacToeCommand extends ListenerAdapter {
         if (!event.getName().equals("tictactoe")) return;
 
         User opponent = Objects.requireNonNull(event.getOption("opponent")).getAsUser();
-
         if (event.getUser().equals(opponent)) {
             event.reply("You can't play against yourself!").setEphemeral(true).queue();
             return;
         }
 
-        CommandRegistry.registerEventListener(new TicTacToe(event.getHook(), event.getUser(), opponent));
+        boolean player1First = true;
+        if (event.getOption("playeronefirst") != null)
+            if (!Objects.requireNonNull(event.getOption("playeronefirst")).getAsBoolean()) {
+                player1First = false;
+            }
+
+        CommandRegistry.registerEventListener(new TicTacToe(event.getHook(), event.getUser(), opponent, player1First));
 
         event.reply("**Game Started**: *" + event.getUser().getName() + "* VS *" + opponent.getName() + "*!!!")
                 .addActionRow(StringSelectMenu.create("TTTTurnDone")

@@ -1,5 +1,6 @@
 package com.github.pickleface5.commands.tictactoe;
 
+import com.github.pickleface5.Main;
 import com.github.pickleface5.util.CommandRegistry;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -45,15 +46,24 @@ public class TicTacToe extends ListenerAdapter {
     static final ArrayList<String> STARTING_TABLE = new ArrayList<>(Collections.nCopies(9, Tiles.EMPTY.getEmoji()));
     ArrayList<String> table;
     Timer timer;
+    Tiles botTile;
+    boolean player1first;
 
-    public TicTacToe(InteractionHook hook, User player1, User player2) {
+    public TicTacToe(InteractionHook hook, User player1, User player2, boolean player1first) {
         this.hook = hook;
         this.player1 = player1;
         this.player2 = player2;
         this.table = (ArrayList<String>) STARTING_TABLE.clone();
         this.timer = new Timer();
+        this.player1first = player1first;
 
         this.updateTable();
+        if (!player1first) {
+            this.botTile = Tiles.PLAYER_ONE;
+            this.lasieTurn(botTile);
+        } else {
+            this.botTile = Tiles.PLAYER_TWO;
+        }
     }
 
     // If we already have a game with the same players going, delete this instance.
@@ -71,7 +81,8 @@ public class TicTacToe extends ListenerAdapter {
         if (this.gameOver) return;
         User playerWin = checkForWin();
         if (playerWin != null) {
-            endGame("**" + playerWin.getName() + " wins!!!**");
+            if (playerWin.getId().equals(Main.BOT_USER_ID)) endGame("**I win!!!**");
+            else endGame("**" + playerWin.getName() + " wins!!!**");
         } else if (isDraw()) {
             endGame("It's a draw!");
         }
@@ -90,7 +101,7 @@ public class TicTacToe extends ListenerAdapter {
                 if (this.table.get(j).equals(Tiles.PLAYER_ONE.getEmoji())) trues++;
                 if (trues >= 3) break;
             }
-            if (trues >= 3) return this.player1;
+            if (trues >= 3) return (this.player1first) ? this.player1 : this.player2;
         }
         for (int[] list : WIN_CONDITIONS) {
             int trues = 0;
@@ -98,7 +109,7 @@ public class TicTacToe extends ListenerAdapter {
                 if (this.table.get(j).equals(Tiles.PLAYER_TWO.getEmoji())) trues++;
                 if (trues >= 3) break;
             }
-            if (trues >= 3) return this.player2;
+            if (trues >= 3) return (this.player1first) ? this.player2 : this.player1;
         }
         return null;
     }
@@ -128,10 +139,10 @@ public class TicTacToe extends ListenerAdapter {
                     event.reply("You can't go there!").setEphemeral(true).queue();
                     return;
                 }
-                this.table.set(num, Tiles.PLAYER_ONE.getEmoji());
+                this.table.set(num, (this.player1first) ? Tiles.PLAYER_ONE.getEmoji() : Tiles.PLAYER_TWO.getEmoji());
                 this.player1Turn = !this.player1Turn;
                 if (this.player2.isBot() || this.player2.isSystem()) {
-                    this.lasieTurn();
+                    this.lasieTurn(this.botTile);
                     this.player1Turn = true;
                 }
             } else if (event.getUser().equals(this.player2) && !this.player1Turn) {
@@ -140,7 +151,7 @@ public class TicTacToe extends ListenerAdapter {
                     event.reply("You can't go there!").setEphemeral(true).queue();
                     return;
                 }
-                this.table.set(num, Tiles.PLAYER_TWO.getEmoji());
+                this.table.set(num, (this.player1first) ? Tiles.PLAYER_TWO.getEmoji() : Tiles.PLAYER_ONE.getEmoji());
                 this.player1Turn = !this.player1Turn;
             } else {
                 event.reply("It's not your turn!").setEphemeral(true).queue();
@@ -175,10 +186,10 @@ public class TicTacToe extends ListenerAdapter {
     }
 
     // lil secret (plus no one wants to help debug a discord bot lol)
-    void lasieTurn() {
+    void lasieTurn(Tiles botTile) {
         if (!(checkForWin() == null)) return;
-        int index = TicTacToeAutoPlay.takeTurn(table);
-        if (index != -1) this.table.set(index, Tiles.PLAYER_TWO.getEmoji());
+        int index = TicTacToeAutoPlay.takeTurn(table, botTile);
+        if (index != -1) this.table.set(index, botTile.getEmoji());
         this.updateTable();
     }
 

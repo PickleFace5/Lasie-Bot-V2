@@ -10,7 +10,7 @@ public class TicTacToeAutoPlay {
     private static final Logger LOGGER = LogManager.getLogger(TicTacToeAutoPlay.class);
     private static final int[][] WIN_CONDITIONS = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
 
-    public static int takeTurn(ArrayList<String> table) {
+    public static int takeTurn(ArrayList<String> table, Tiles botTile) {
         ArrayList<Integer> intTable = convertTableToInt(table);
 
         // 1. Win
@@ -18,9 +18,13 @@ public class TicTacToeAutoPlay {
         // 4. Create a fork to let us win next turn
         // 5. Place anywhere (Will be a draw)
 
-        if (placeWin(intTable) != -1) return placeWin(intTable);
-        else if (blockWin(intTable) != -1) return blockWin(intTable);
-        else if (placeFork(intTable) != -1) return placeFork(intTable);
+        int placeWinRes = placeWin(intTable, botTile);
+        int blockWinRes = blockWin(intTable, botTile);
+        int placeForkRes = placeFork(intTable, botTile);
+
+        if (placeWinRes != -1) return placeWinRes;
+        else if (blockWinRes != -1) return blockWinRes;
+        else if (placeForkRes != -1) return placeForkRes;
         else return priorityPlace(intTable);
     }
 
@@ -34,13 +38,13 @@ public class TicTacToeAutoPlay {
         return intTable;
     }
 
-    private static int placeWin(ArrayList<Integer> table) {
+    private static int placeWin(ArrayList<Integer> table, Tiles botTile) {
         for (int[] ints: WIN_CONDITIONS) {
             int computerSpots = 0;
             int emptySpots = 0;
             int lastEmptySpot = 0;
             for (int spot: ints) {
-                if (table.get(spot) == Tiles.PLAYER_TWO.getId()) {
+                if (table.get(spot) == botTile.getId()) {
                     computerSpots++;
                 }
                 if (table.get(spot) == Tiles.EMPTY.getId()) {
@@ -57,21 +61,21 @@ public class TicTacToeAutoPlay {
         return -1;
     }
 
-    private static int blockWin(ArrayList<Integer> table) {
+    private static int blockWin(ArrayList<Integer> table, Tiles botTile) {
         for (int[] ints: WIN_CONDITIONS) {
-            int computerSpots = 0;
+            int playerSpots = 0;
             int emptySpots = 0;
             int lastEmptySpot = 0;
             for (int spot: ints) {
-                if (table.get(spot) == Tiles.PLAYER_ONE.getId()) {
-                    computerSpots++;
+                if (table.get(spot) == getOpponentTile(botTile).getId()) {
+                    playerSpots++;
                 } else if (table.get(spot) == Tiles.EMPTY.getId()) {
                     emptySpots++;
                     lastEmptySpot = spot;
                 }
             }
 
-            if (computerSpots == 2 && emptySpots == 1) {
+            if (playerSpots == 2 && emptySpots == 1) {
                 return lastEmptySpot;
             }
         }
@@ -79,7 +83,7 @@ public class TicTacToeAutoPlay {
         return -1;
     }
 
-    private static int placeFork(ArrayList<Integer> table) {
+    private static int placeFork(ArrayList<Integer> table, Tiles botTile) {
         // Create list of indexes that are currently empty
         // For each index, test if there's 2 wins on the next move on that board, then return the spot to go to create the fork
         ArrayList<Integer> emptyIndex = new ArrayList<>(9);
@@ -96,7 +100,7 @@ public class TicTacToeAutoPlay {
              LOGGER.trace("--- TESTING INDEX #{} ---", i);
              ArrayList<Integer> testTable;
              testTable = table;
-             testTable.set(i, Tiles.PLAYER_TWO.getId());
+             testTable.set(i, botTile.getId());
              LOGGER.trace("TEST TABLE: {}", testTable.toString());
 
              int possibleWins = 0;
@@ -105,7 +109,7 @@ public class TicTacToeAutoPlay {
                  int emptySpots = 0;
                  int playerSpots = 0;
                  for (int spot : condition) {
-                     if (testTable.get(spot) == Tiles.PLAYER_TWO.getId()) computerSpots++;
+                     if (testTable.get(spot) == botTile.getId()) computerSpots++;
                      else if (testTable.get(spot) == Tiles.EMPTY.getId()) emptySpots++;
                      else playerSpots++;
                  }
@@ -118,7 +122,10 @@ public class TicTacToeAutoPlay {
                  }
              }
              LOGGER.trace("Possible wins found by placing at index #{}: {}", i, possibleWins);
-             if (possibleWins >= 2) return i;
+             if (possibleWins >= 2) {
+                 LOGGER.trace("PLACING AT INDEX #{}", i);
+                 return i;
+             }
              testTable.set(i, Tiles.EMPTY.getId());
         }
         return -1;
@@ -134,5 +141,9 @@ public class TicTacToeAutoPlay {
             }
         }
         return -1;
+    }
+
+    private static Tiles getOpponentTile(Tiles botTile) {
+        return (botTile == Tiles.PLAYER_ONE) ? Tiles.PLAYER_TWO : Tiles.PLAYER_ONE;
     }
 }
