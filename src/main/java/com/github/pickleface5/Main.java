@@ -15,24 +15,37 @@ import java.util.HashMap;
 
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
-    public static JDA JDA = null;
+    public static JDA JDA;
     public static final File TEMP_DIRECTORY = new File(new File(System.getProperty("java.io.tmpdir")), "files");
-
-    static {
-        try {
-            JDA = JDABuilder.createDefault(System.getenv("BOT_TOKEN"))
-                    .enableCache(CacheFlag.VOICE_STATE)
-                    .build()
-                    .awaitReady();
-        } catch (InterruptedException e) {
-            logger.fatal(e.getMessage());
-            System.exit(-1);
-        }
-    }
-    public static final String BOT_USER_ID = JDA.getSelfUser().getId();
+    public static String BOT_USER_ID = null;
 
     public static void main(String[] args) {
         logger.traceEntry();
+
+        if (args.length > 0) {
+            logger.info(args[0]);
+            try {
+                String token = args[0];
+                JDA = JDABuilder.createDefault(token)
+                        .enableCache(CacheFlag.VOICE_STATE)
+                        .build()
+                        .awaitReady();
+            } catch (InterruptedException e) {
+                logger.fatal(e.getMessage());
+                System.exit(-1);
+            }
+        } else {
+            try {
+                JDA = JDABuilder.createDefault(System.getenv("BOT_TOKEN"))
+                        .enableCache(CacheFlag.VOICE_STATE)
+                        .build()
+                        .awaitReady();
+            } catch (InterruptedException e) {
+                logger.fatal(e.getMessage());
+                System.exit(-1);
+            }
+        }
+        BOT_USER_ID = JDA.getSelfUser().getId();
 
         if (TEMP_DIRECTORY.exists()) {
             logger.info("Temp Directory exists");
@@ -41,8 +54,8 @@ public class Main {
                 logger.info("Temp Directory created");
             else {
                 logger.fatal("TEMP DIRECTORY ERROR, NOT CREATED");
+                System.exit(-1);
             }
-
         }
         logger.info("Current temp path: {}", Main.TEMP_DIRECTORY.getAbsolutePath());
 
