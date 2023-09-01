@@ -56,6 +56,8 @@ public class CommandRegistry {
         registerSlashCommand(Commands.slash("tictactoe", "Play Tic Tac Toe against someone.")
                 .addOption(OptionType.USER, "opponent", "Opponent you want to play.", true)
                 .addOption(OptionType.BOOLEAN, "playeronefirst", "Set this to false if you want the other player to go first."), new TicTacToeCommand());
+        registerSlashCommand(Commands.slash("frc", "Grabs FRC team info from The Blue Alliance.")
+                .addOption(OptionType.INTEGER, "team", "The Team Number (e.g. 6343, 2471, etc)", true), new FRCCommand());
     }
 
     // It's a bad idea to use the bots name, but it's okay since it will never get renamed. Ever.
