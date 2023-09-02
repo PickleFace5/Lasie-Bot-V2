@@ -18,7 +18,13 @@ public class FRCCommand extends ListenerAdapter {
         if (!event.getName().equals("frc")) return;
         event.deferReply().queue();
 
-        HttpResponse<JsonNode> receivedInfo = Unirest.get("https://www.thebluealliance.com/api/v3/team/frc" + event.getOption("team").getAsInt()).header("X-TBA-Auth-Key", System.getenv("FRC_API_KEY")).asJson();
+        HttpResponse<JsonNode> receivedInfo;
+        try {
+            receivedInfo = Unirest.get("https://www.thebluealliance.com/api/v3/team/frc" + event.getOption("team").getAsInt()).header("X-TBA-Auth-Key", System.getenv("FRC_API_KEY")).asJson();
+        } catch (ArithmeticException e) {
+            event.getHook().sendMessage("Team " + event.getOption("team").getAsString() + " does not exist!").queue();
+            return;
+        }
 
         LOGGER.info(receivedInfo.getBody().toString());
 
