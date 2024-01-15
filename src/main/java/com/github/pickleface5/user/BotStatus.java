@@ -5,8 +5,6 @@ import com.github.pickleface5.Main;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.RichPresence;
 import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -55,6 +53,57 @@ public class BotStatus { //TODO: Automatically get list(?) (see roadmap)
         scheduler.scheduleAtFixedRate(method, 0, 10, MINUTES);
     }
 
+    private static void setBotActivity() {
+        Main.JDA.getPresence().setActivity(new Activity() {
+            @Override
+            public boolean isRich() {
+                return false;
+            }
+
+            @Override
+            public RichPresence asRichPresence() {
+                return null;
+            }
+
+            @Override
+            public String getName() {
+                return GAME_LIST[GENERATOR.nextInt(GAME_LIST.length)];
+            }
+
+            @Override
+            public String getState() {
+                return null;
+            }
+
+            @Override
+            public String getUrl() {
+                return null;
+            }
+
+            @Override
+            public ActivityType getType() {
+                return ActivityType.PLAYING;
+            }
+
+            @Override
+            public Timestamps getTimestamps() {
+                return null;
+            }
+
+            @Override
+            public EmojiUnion getEmoji() {
+                return null;
+            }
+
+            @Override
+            public Activity withState(String state) {
+                return null;
+            }
+        });
+    }
+
+
+    /*
     public static void setBotActivity() {
         Main.JDA.getPresence().setActivity(new Activity() {
             @Override
@@ -99,4 +148,6 @@ public class BotStatus { //TODO: Automatically get list(?) (see roadmap)
             }
         });
     }
+
+     */
 }
