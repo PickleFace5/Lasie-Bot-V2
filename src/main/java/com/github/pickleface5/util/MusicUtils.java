@@ -146,7 +146,7 @@ public class MusicUtils {
 
     public static String getDurationString(long millis) {
         long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MILLISECONDS.toMinutes(millis);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes);
         if (seconds < 10) return String.format("%d:0%d", minutes, seconds);
         else return String.format("%d:%d", minutes, seconds);
     }
