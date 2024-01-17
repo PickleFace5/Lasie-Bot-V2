@@ -14,7 +14,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class BotStatus { //TODO: Automatically get list(?) (see roadmap)
     private static final Random GENERATOR = new Random();
-    static final String[] GAME_LIST = {"", "5D Chess", "A Dance of Fire and Ice", "A Hat In Time",
+    static final String[] GAME_LIST = {"5D Chess", "A Dance of Fire and Ice", "A Hat In Time",
             "ARK: Survival Evolved", "ASTRONEER", "Among Us", "Among Us VR", "Angry Birds", "Angry Birds 2",
             "Apex Legends", "Battle Cats", "Beat Saber", "Blender", "Bloons TD 2", "Bloons TD 3", "Bloons TD 4",
             "Bloons TD 5", "Bloons TD 6", "Bloons TD Battles", "Bloons Tower Defense", "Blush Blush",
@@ -43,7 +43,7 @@ public class BotStatus { //TODO: Automatically get list(?) (see roadmap)
             "The Geneva Conventions of August 12th, 1949", "The Legend of Zelda: Breath of the Wild", "Tic Tac Toe",
             "Titanfall", "Tom Clancy's Rainbow Six Siege", "UNDERTALE", "Universe Sandbox", "Valheim", "Vermintide",
             "Vermintide 2", "Wallpaper Engine", "War Thunder", "Warhammer 40,000", "Who's Your Daddy?!", "Wii Sports",
-            "Wii Sports Resort", "XCOM", "XCOM 2", "XCOM EW", "osu!"};
+            "Wii Sports Resort", "XCOM", "XCOM 2", "XCOM EW", "osu!", "Rain World"};
 
     private static final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
