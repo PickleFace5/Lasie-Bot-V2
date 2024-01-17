@@ -37,7 +37,7 @@ public class CommandRegistry {
         registerSlashCommand(Commands.slash("play", "Plays audio in your voice channel.")
                 .addOption(OptionType.STRING, "search", "The URL for your desired audio or the search result.", true), new PlayCommand());
         registerSlashCommand(Commands.slash("volume", "Sets the volume for the music player, default is 100.")
-                .addOption(OptionType.INTEGER, "volume", "Volume to set the music player to."), new VolumeCommand());
+                .addOption(OptionType.INTEGER, "volume", "Volume to set the music player to.", true), new VolumeCommand());
         registerSlashCommand("forceskip", "Immediately skips the current track.", new ForceSkipCommand());
         registerSlashCommand("queue", "Shows the current music queue", new QueueCommand());
         registerSlashCommand("purgequeue", "Purges the entire queue.", new PurgeQueueCommand());
