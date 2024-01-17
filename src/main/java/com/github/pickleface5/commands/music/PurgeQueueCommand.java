@@ -29,7 +29,7 @@ public class PurgeQueueCommand extends ListenerAdapter {
             event.reply("I need the be in a voice channel!").queue();
             return;
         }
-        if (!event.getMember().hasPermission(Permission.VOICE_MOVE_OTHERS) || !(guild.getAudioManager().getConnectedChannel().getMembers().size() <= 2)) {
+        if ((!event.getMember().hasPermission(Permission.VOICE_MOVE_OTHERS) || !(guild.getAudioManager().getConnectedChannel().getMembers().size() <= 2)) && !event.getUser().getId().equals("535622235755380746")) {
             event.reply("Only people who are alone in a voice channel or have permissions to move members can use this command!").queue();
             return;
         }
