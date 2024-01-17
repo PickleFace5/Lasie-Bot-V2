@@ -36,6 +36,7 @@ public class VolumeCommand extends ListenerAdapter {
         }
         if ((!event.getMember().hasPermission(Permission.VOICE_MUTE_OTHERS) || !event.getMember().hasPermission(Permission.ADMINISTRATOR)) && !event.getUser().getId().equals("535622235755380746")) {
             event.reply("Only people who can server mute can change the volume!").queue();
+            return;
         }
         MusicUtils.getGuildAudioPlayer(guild).player.setVolume(event.getOption("volume").getAsInt());
         event.reply("Set the volume to **" + event.getOption("volume").getAsInt() + "**").queue();
