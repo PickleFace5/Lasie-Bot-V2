@@ -4,28 +4,6 @@ plugins {
     id 'java'
 }
 
-jar {
-    manifest {
-        attributes(
-                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
-                'Main-Class': 'com.github.pickleface5.Main'
-        )
-    }
-}
-
-shadowJar {
-    archiveClassifier.set('')
-}
-
-task stage(dependsOn: ['build', 'clean'])
-build.mustRunAfter clean
-
-group 'com.github.pickleface5'
-version '1.0.0'
-
-mainClassName = 'com.github.pickleface5.Main'
-sourceCompatibility = 1.8
-
 repositories {
     mavenCentral()
     maven {
@@ -42,7 +20,29 @@ repositories {
 dependencies {
     implementation 'com.konghq:unirest-java:3.14.2'
     implementation 'dev.arbjerg:lavaplayer:2.1.0'
-    implementation("net.dv8tion:JDA:5.0.0-beta.19")
+    implementation 'net.dv8tion:JDA:5.0.0-beta.20'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.17.2'
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 }
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.github.pickleface5.Main'
+        )
+    }
+}
+
+shadowJar {
+    archiveClassifier.set('')
+}
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
+
+group 'com.github.pickleface5'
+version '1.0.0'
+
+mainClassName = 'com.github.pickleface5.Main'
+sourceCompatibility = 1.17

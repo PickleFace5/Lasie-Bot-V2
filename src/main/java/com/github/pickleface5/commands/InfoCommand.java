@@ -13,7 +13,7 @@ public class InfoCommand extends ListenerAdapter {
         if (!event.getName().equals("info")) return;
         MessageEmbed embed = new EmbedBuilder()
                 .setTitle("Lasie Bot")
-                .setDescription("Made in Java using JDA, Lavaplayer, Unirest, and log4j.")
+                .setDescription("Made in Java 17 using JDA, Lavaplayer, Unirest, and log4j.")
                 .setFooter("Made by pickle_face5")
                 .setColor(EmbedUtils.EMBED_COLOR)
                 .build();
