@@ -24,43 +24,29 @@ public class QueueCommand extends ListenerAdapter {
         Guild guild = event.getGuild();
         GuildMusicManager guildMusicManager = MusicUtils.getGuildAudioPlayer(guild);
         BlockingQueue<AudioTrack> guildQueue = guildMusicManager.scheduler.getQueue();
-        if (guildQueue.size() == 0 && !guildMusicManager.getTrackScheduler().isLooping) {
+        if (guildQueue.size() == 0 && !guildMusicManager.getTrackScheduler().isLooping && guildMusicManager.player.getPlayingTrack() == null) {
             event.reply("There's nothing in the queue!").queue();
             return;
         }
+
         event.deferReply().queue();
-        EmbedBuilder messageEmbed = new EmbedBuilder().setColor(EmbedUtils.EMBED_COLOR)
-                .setTitle("Music Queue");
-        String title = guildMusicManager.player.getPlayingTrack().getInfo().title;
-        String uri = guildMusicManager.player.getPlayingTrack().getInfo().uri;
-        if (guildMusicManager.getTrackScheduler().isLooping()) {
-            if (title.equals("Unknown title")) {
-                messageEmbed.addField("Now Playing", "[" + uri + "](" + uri + ")", false);
-            } else {
-                messageEmbed.addField("Now Playing", "[" + title + "](" + uri + ")", false);
-            }
-            event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
-            return;
-        }
+        EmbedBuilder messageEmbed = new EmbedBuilder().setColor(EmbedUtils.EMBED_COLOR).setTitle("Music Queue");
+        AudioTrack currentTrack = guildMusicManager.player.getPlayingTrack();
+        String title = currentTrack.getInfo().title;
+        String uri = currentTrack.getInfo().uri;
+        long totalTime = currentTrack.getDuration() - currentTrack.getPosition();
+        String durationLeft = MusicUtils.getDurationString(totalTime);
+        messageEmbed.addField("Now Playing", "[" + title + "](" + uri + ") (" + durationLeft + " left)", false);
         for (int i = 0; i < guildQueue.size(); i++) {
             Object[] audioTrack = guildQueue.toArray();
-            if (i == 0) {
-                if (title.equals("Unknown title")) {
-                    messageEmbed.addField("Next In Queue", "[" + uri + "](" + uri + ") (" + MusicUtils.getDurationString(((DelegatedAudioTrack) audioTrack[i]).getDuration()) + ")", false);
-                } else {
-                    messageEmbed.addField("Next In Queue", "[" + title + "](" + uri + ") (" + MusicUtils.getDurationString(((DelegatedAudioTrack) audioTrack[i]).getDuration()) + ")", false);
-                }
-            }
-            else if (audioTrack[i] instanceof DelegatedAudioTrack) {
-                if (((DelegatedAudioTrack) audioTrack[i]).getInfo().title.equals("Unknown title")) {
-                    messageEmbed.addField("#" + (i + 2), "[" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + "](" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + ") (" + MusicUtils.getDurationString(((DelegatedAudioTrack) audioTrack[i]).getDuration()) + ")", false);
-                }
-                else {
-                    messageEmbed.addField("#" + (i + 2), "[" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().title + "](" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + ") (" + MusicUtils.getDurationString(((DelegatedAudioTrack) audioTrack[i]).getDuration()) + ")", false);
-                }
+            if (audioTrack[i] instanceof DelegatedAudioTrack) {
+                long duration = ((DelegatedAudioTrack) audioTrack[i]).getDuration();
+                messageEmbed.addField("#" + (i + 1), "[" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().title + "](" + ((DelegatedAudioTrack) audioTrack[i]).getInfo().uri + ") (" + MusicUtils.getDurationString(duration) + ")", false);
+                totalTime = totalTime + duration;
             }
             else messageEmbed.addField("Unknown Error", "Unknown Error", false);
         }
+        messageEmbed.setFooter("Total Playtime: " + MusicUtils.getDurationString(totalTime));
         event.getHook().sendMessageEmbeds(messageEmbed.build()).queue();
     }
 }
