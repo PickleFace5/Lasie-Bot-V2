@@ -9,6 +9,6 @@ public class PingCommand extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("ping")) return;
-        event.reply("My ping is " + Main.JDA.getGatewayPing() + "ms!").queue();
+        event.reply("My ping is `" + Main.JDA.getRestPing().complete() + "` ms!").queue();
     }
 }
