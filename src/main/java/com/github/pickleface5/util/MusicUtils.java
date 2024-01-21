@@ -39,11 +39,11 @@ public class MusicUtils {
     public static void connectToVoice(Guild guild, AudioChannel voiceChannel) {
         getGuildAudioPlayer(guild).getTrackScheduler().clearQueue();
         getGuildAudioPlayer(guild).player.destroy();
+        getGuildAudioPlayer(guild).player.setVolume(50);
         getGuildAudioPlayer(guild).getTrackScheduler().isLooping = false;
         AudioManager audioManager = guild.getAudioManager();
         audioManager.openAudioConnection(voiceChannel);
         audioManager.setSendingHandler(new AudioPlayerSendHandler(getGuildAudioPlayer(guild).player));
-
     }
 
     public static GuildMusicManager getGuildAudioPlayer(Guild guild) {
