@@ -30,6 +30,7 @@ public class ForceSkipCommand extends ListenerAdapter {
             }
             if ((!event.getMember().hasPermission(Permission.VOICE_MUTE_OTHERS) || !event.getMember().hasPermission(Permission.ADMINISTRATOR)) && !event.getUser().getId().equals("535622235755380746")) {
                 event.reply("Only people who can server mute can force skip songs!").queue();
+                return;
             }
             MusicUtils.getGuildAudioPlayer(event.getGuild()).scheduler.nextTrack(null);
             if (MusicUtils.getGuildAudioPlayer(event.getGuild()).getTrackScheduler().getQueue().isEmpty()) {
