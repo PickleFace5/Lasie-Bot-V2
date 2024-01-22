@@ -45,6 +45,8 @@ public class CommandRegistry {
         registerSlashCommand("resume", "Resumes the current song.", new ResumeCommand());
         registerSlashCommand("loop", "Toggles looping the current track.", new LoopCommand());
         registerSlashCommand("skip", "Allows you to skip the song when your alone in voice.", new SkipCommand());
+        registerSlashCommand(Commands.slash("forward", "Moves the current position of the song forward by the specifed amount.")
+                .addOption(OptionType.NUMBER, "duration", "Specified duration to move foward by, in seconds.", true), new ForwardCommand());
         registerSlashCommand(Commands.slash("chad", "Turns you into a gigachad.")
                 .addOption(OptionType.USER, "user", "The user to want to make a **king**", false), new ChadCommand());
         registerSlashCommand("abstract", "Creates randomly generated abstract art.", new AbstractCommand());

@@ -17,6 +17,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalTime;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -149,5 +150,9 @@ public class MusicUtils {
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes);
         if (seconds < 10) return String.format("%d:0%d", minutes, seconds);
         else return String.format("%d:%d", minutes, seconds);
+    }
+
+    public static long getStringToMillis(String duration) {
+        return LocalTime.parse(duration).toSecondOfDay() * 1000L;
     }
 }
