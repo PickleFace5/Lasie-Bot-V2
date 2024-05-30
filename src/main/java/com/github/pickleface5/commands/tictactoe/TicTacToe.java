@@ -53,6 +53,7 @@ public class TicTacToe extends ListenerAdapter {
     Tiles botTile;
     boolean player1first;
 
+    @SuppressWarnings("unchecked")
     public TicTacToe(InteractionHook hook, User player1, User player2, boolean player1first) {
         this.hook = hook;
         this.player1 = player1;

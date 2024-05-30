@@ -4,16 +4,14 @@ import com.github.pickleface5.util.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Random;
 
 @Deprecated
-public class BenCommand extends ListenerAdapter { // Leaving this here in case I want to re-add it later for some reason
-    private static final Logger logger = LogManager.getLogger(BenCommand.class);
+public class BenCommand extends ListenerAdapter {
+
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("ben")) return;
