@@ -58,7 +58,7 @@ public class Main {
                 System.exit(-1);
             }
         }
-        logger.info("Current temp path: {}", Main.TEMP_DIRECTORY.getAbsolutePath());
+        logger.debug("Current temp path: {}", Main.TEMP_DIRECTORY.getAbsolutePath());
 
         new MusicUtils(new DefaultAudioPlayerManager(), new HashMap<>());
 

@@ -76,7 +76,7 @@ public class CommandRegistry {
             Main.JDA.upsertCommand(name, description).queue();
         }
         Main.JDA.addEventListener(listener);
-        logger.info("Added Slash Command {} to {}", name, Main.JDA.getSelfUser().getName());
+        logger.debug("Added Slash Command {}", name);
     }
 
     private static void registerSlashCommand(CommandData commandData, ListenerAdapter listener) {
@@ -90,7 +90,7 @@ public class CommandRegistry {
             Main.JDA.upsertCommand(commandData).queue();
         }
         Main.JDA.addEventListener(listener);
-        logger.info("Added Slash Command {}", commandData.getName());
+        logger.debug("Added Slash Command {}", commandData.getName());
     }
 
     public static void registerEventListener(ListenerAdapter listener) {
