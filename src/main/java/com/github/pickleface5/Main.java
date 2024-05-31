@@ -1,7 +1,7 @@
 package com.github.pickleface5;
 
 import com.github.pickleface5.user.BotStatus;
-import com.github.pickleface5.util.CommandRegistry;
+import com.github.pickleface5.util.ListenerRegistry;
 import com.github.pickleface5.util.MusicUtils;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 
@@ -62,7 +62,7 @@ public class Main {
 
         new MusicUtils(new DefaultAudioPlayerManager(), new HashMap<>());
 
-        new CommandRegistry();
+        new ListenerRegistry();
 
         BotStatus.activateBotActivityRoutine();
     }

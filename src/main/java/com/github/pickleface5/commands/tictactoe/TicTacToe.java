@@ -1,7 +1,7 @@
 package com.github.pickleface5.commands.tictactoe;
 
 import com.github.pickleface5.Main;
-import com.github.pickleface5.util.CommandRegistry;
+import com.github.pickleface5.util.ListenerRegistry;
 
 import ch.qos.logback.classic.Logger;
 import net.dv8tion.jda.api.entities.User;
@@ -96,7 +96,7 @@ public class TicTacToe extends ListenerAdapter {
         this.hook.editOriginal("Game deleted: New game started between player 1 and 2").queue();
         this.gameOver = true;
         try {
-            CommandRegistry.removeEventListener(this);
+            ListenerRegistry.removeListener(this);
         } catch (IllegalArgumentException ignored) {
             logger.debug("EventListener for \"{} ||| {}\" is already deleted, ignoring...", this.player1.getId(), this.player2.getId());
         }
@@ -190,7 +190,7 @@ public class TicTacToe extends ListenerAdapter {
     void endGame(String msg) {
         this.gameOver = true;
         this.hook.sendMessage(msg).queue();
-        CommandRegistry.removeEventListener(this);
+        ListenerRegistry.removeListener(this);
     }
 
     // lil secret (plus no one wants to help debug a discord bot lol)

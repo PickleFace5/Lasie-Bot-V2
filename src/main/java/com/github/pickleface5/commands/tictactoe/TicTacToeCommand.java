@@ -1,6 +1,6 @@
 package com.github.pickleface5.commands.tictactoe;
 
-import com.github.pickleface5.util.CommandRegistry;
+import com.github.pickleface5.util.ListenerRegistry;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -26,7 +26,7 @@ public class TicTacToeCommand extends ListenerAdapter {
                 player1First = false;
             }
 
-        CommandRegistry.registerEventListener(new TicTacToe(event.getHook(), event.getUser(), opponent, player1First));
+        ListenerRegistry.listener(new TicTacToe(event.getHook(), event.getUser(), opponent, player1First));
 
         event.reply("**Game Started**: *" + event.getUser().getName() + "* VS *" + opponent.getName() + "*!!!")
                 .addActionRow(StringSelectMenu.create("TTTTurnDone")

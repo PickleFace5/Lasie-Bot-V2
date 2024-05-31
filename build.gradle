@@ -40,6 +40,7 @@ java {
 }
 
 shadowJar {
+    minimize()
     archiveClassifier.set('')
 }
 

@@ -1,4 +1,4 @@
-package com.github.pickleface5.commands;
+package com.github.pickleface5.commands.robot;
 
 import com.github.pickleface5.util.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;

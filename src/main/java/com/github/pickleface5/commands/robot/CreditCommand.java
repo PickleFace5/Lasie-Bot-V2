@@ -1,4 +1,4 @@
-package com.github.pickleface5.commands;
+package com.github.pickleface5.commands.robot;
 
 import com.github.pickleface5.util.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -7,13 +7,13 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-public class InfoCommand extends ListenerAdapter {
+public class CreditCommand extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("info")) return;
         MessageEmbed embed = new EmbedBuilder()
                 .setTitle("Lasie Bot")
-                .setDescription("Made in Java 17 using JDA, Lavaplayer, Unirest, and log4j.")
+                .setDescription("Made in Java 17 using JDA, Lavaplayer, Unirest, and logback.")
                 .setFooter("Made by pickle_face5")
                 .setColor(EmbedUtils.EMBED_COLOR)
                 .build();
