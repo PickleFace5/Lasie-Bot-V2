@@ -4,23 +4,24 @@ import com.github.pickleface5.user.BotStatus;
 import com.github.pickleface5.util.CommandRegistry;
 import com.github.pickleface5.util.MusicUtils;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+
+import ch.qos.logback.classic.Logger;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.HashMap;
 
+import org.slf4j.LoggerFactory;
+
 public class Main {
-    private static final Logger logger = LogManager.getLogger(Main.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(Main.class);
     public static JDA JDA;
     public static final File TEMP_DIRECTORY = new File(new File(System.getProperty("java.io.tmpdir")), "files");
     public static String BOT_USER_ID = null;
 
     public static void main(String[] args) {
-        logger.traceEntry();
 
         if (args.length > 0) {
             logger.info(args[0]);
@@ -31,7 +32,7 @@ public class Main {
                         .build()
                         .awaitReady();
             } catch (InterruptedException e) {
-                logger.fatal(e.getMessage());
+                logger.error(e.getMessage());
                 System.exit(-1);
             }
         } else {
@@ -41,7 +42,7 @@ public class Main {
                         .build()
                         .awaitReady();
             } catch (InterruptedException e) {
-                logger.fatal(e.getMessage());
+                logger.error(e.getMessage());
                 System.exit(-1);
             }
         }
@@ -53,7 +54,7 @@ public class Main {
             if (TEMP_DIRECTORY.mkdirs()) // Returns a boolean, but this has a very low chance of returning false, sooo...
                 logger.info("Temp Directory created");
             else {
-                logger.fatal("TEMP DIRECTORY ERROR, NOT CREATED");
+                logger.error("TEMP DIRECTORY ERROR, NOT CREATED");
                 System.exit(-1);
             }
         }
@@ -64,7 +65,5 @@ public class Main {
         new CommandRegistry();
 
         BotStatus.activateBotActivityRoutine();
-        logger.info("Finished loading {} on shard {}!", JDA.getSelfUser().getName(), JDA.getShardInfo().getShardId() + 1);
-        logger.info("Currently loaded in [{}] servers", JDA.getGuilds().size());
     }
 }

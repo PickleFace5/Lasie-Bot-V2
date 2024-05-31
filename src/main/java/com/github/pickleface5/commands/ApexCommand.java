@@ -2,6 +2,7 @@ package com.github.pickleface5.commands;
 
 import com.github.pickleface5.util.EmbedUtils;
 
+import ch.qos.logback.classic.Logger;
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.JsonNode;
 import kong.unirest.core.Unirest;
@@ -13,8 +14,7 @@ import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInterac
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,8 +30,9 @@ enum Platforms {
 
 public class ApexCommand extends ListenerAdapter {
 
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(ApexCommand.class);
+
     private final String APEX_TOKEN = System.getenv("APEX_TOKEN");
-    private static final Logger logger = LogManager.getLogger(ApexCommand.class);
     private final String[] OPTIONS = new String[]{"Player Statistics", "Map Rotation", "Predator Requirements"};
 
     @Override

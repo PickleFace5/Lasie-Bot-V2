@@ -2,14 +2,15 @@ package com.github.pickleface5.commands.tictactoe;
 
 import com.github.pickleface5.Main;
 import com.github.pickleface5.util.CommandRegistry;
+
+import ch.qos.logback.classic.Logger;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.InteractionHook;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,7 @@ enum Tiles {
 }
 
 public class TicTacToe extends ListenerAdapter {
-    private static final Logger LOGGER = LogManager.getLogger(TicTacToe.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(TicTacToe.class);
 
     InteractionHook hook;
     User player1;
@@ -97,7 +98,7 @@ public class TicTacToe extends ListenerAdapter {
         try {
             CommandRegistry.removeEventListener(this);
         } catch (IllegalArgumentException ignored) {
-            LOGGER.debug("EventListener for \"{} ||| {}\" is already deleted, ignoring...", this.player1.getId(), this.player2.getId());
+            logger.debug("EventListener for \"{} ||| {}\" is already deleted, ignoring...", this.player1.getId(), this.player2.getId());
         }
     }
 

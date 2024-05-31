@@ -1,13 +1,16 @@
 package com.github.pickleface5.commands.tictactoe;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.Logger;
+
 public class TicTacToeAutoPlay {
-    private static final Logger LOGGER = LogManager.getLogger(TicTacToeAutoPlay.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(TicTacToeAutoPlay.class);
+    
     private static final int[][] WIN_CONDITIONS = { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 }, { 0, 3, 6 }, { 1, 4, 7 },
             { 2, 5, 8 }, { 0, 4, 8 }, { 2, 4, 6 } };
 
@@ -103,14 +106,14 @@ public class TicTacToeAutoPlay {
             }
             index++;
         }
-        LOGGER.trace("Found {} possible placements: {}", emptyIndex.size(), emptyIndex.toString());
+        logger.trace("Found {} possible placements: {}", emptyIndex.size(), emptyIndex.toString());
 
         for (int i : emptyIndex) {
-            LOGGER.trace("--- TESTING INDEX #{} ---", i);
+            logger.trace("--- TESTING INDEX #{} ---", i);
             ArrayList<Integer> testTable;
             testTable = table;
             testTable.set(i, botTile.getId());
-            LOGGER.trace("TEST TABLE: {}", testTable.toString());
+            logger.trace("TEST TABLE: {}", testTable.toString());
 
             int possibleWins = 0;
             for (int[] condition : WIN_CONDITIONS) {
@@ -127,16 +130,16 @@ public class TicTacToeAutoPlay {
                 }
 
                 if (computerSpots == 2 && emptySpots == 1 && playerSpots == 0) {
-                    LOGGER.trace("Comp. spots: {}, Empty spots: {}, Player spots: {} on win condition {}",
+                    logger.trace("Comp. spots: {}, Empty spots: {}, Player spots: {} on win condition {}",
                             computerSpots, emptySpots, playerSpots, Arrays.toString(condition));
                     possibleWins++;
                 } else {
-                    LOGGER.trace("Win condition {} doesn't give win", Arrays.toString(condition));
+                    logger.trace("Win condition {} doesn't give win", Arrays.toString(condition));
                 }
             }
-            LOGGER.trace("Possible wins found by placing at index #{}: {}", i, possibleWins);
+            logger.trace("Possible wins found by placing at index #{}: {}", i, possibleWins);
             if (possibleWins >= 2) {
-                LOGGER.trace("PLACING AT INDEX #{}", i);
+                logger.trace("PLACING AT INDEX #{}", i);
                 return i;
             }
             testTable.set(i, Tiles.EMPTY.getId());

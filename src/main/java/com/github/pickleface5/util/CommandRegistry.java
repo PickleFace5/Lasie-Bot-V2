@@ -9,18 +9,19 @@ import com.github.pickleface5.commands.music.*;
 import com.github.pickleface5.commands.tictactoe.TicTacToeCommand;
 import com.github.pickleface5.logging.ServerChecker;
 import com.github.pickleface5.music.VoiceChannelDisconnectIfAlone;
+
+import ch.qos.logback.classic.Logger;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
 public class CommandRegistry {
-    private static final Logger LOGGER = LogManager.getLogger(CommandRegistry.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(CommandRegistry.class);
 
     static {
         registerEventListener(new VoiceChannelDisconnectIfAlone());
@@ -64,20 +65,18 @@ public class CommandRegistry {
                 .addOption(OptionType.INTEGER, "team", "The Team Number (e.g. 6343, 2471, etc)", true), new FRCCommand());
     }
 
-    // It's a bad idea to use the bots name, but it's okay since it will never get renamed. Ever.
-    // getGuildById("798332906614423563") sends the commands only to the debug guild, so I don't have to wait an hour.
     private static void registerSlashCommand(String name, String description, ListenerAdapter listener) {
         if (!Main.JDA.getSelfUser().getName().equals("Lasie Bot")) {
             try {
                 Objects.requireNonNull(Main.JDA.getGuildById("798332906614423563")).upsertCommand(name, description).queue();
             } catch (NullPointerException | ErrorResponseException exception) {
-                LOGGER.error("Test server not found");
+                logger.error("Test server not found");
             }
         } else {
             Main.JDA.upsertCommand(name, description).queue();
         }
         Main.JDA.addEventListener(listener);
-        LOGGER.info("Added Slash Command {} to {}", name, Main.JDA.getSelfUser().getName());
+        logger.info("Added Slash Command {} to {}", name, Main.JDA.getSelfUser().getName());
     }
 
     private static void registerSlashCommand(CommandData commandData, ListenerAdapter listener) {
@@ -85,22 +84,20 @@ public class CommandRegistry {
             try {
                 Objects.requireNonNull(Main.JDA.getGuildById("798332906614423563")).upsertCommand(commandData).queue();
             } catch (ErrorResponseException | NullPointerException exception) {
-                LOGGER.error("Test server not found");
+                logger.error("Test server not found");
             }
         } else {
             Main.JDA.upsertCommand(commandData).queue();
         }
         Main.JDA.addEventListener(listener);
-        LOGGER.info("Added Slash Command {} to {}", commandData.getName(), Main.JDA.getSelfUser().getName());
+        logger.info("Added Slash Command {}", commandData.getName());
     }
 
     public static void registerEventListener(ListenerAdapter listener) {
         Main.JDA.addEventListener(listener);
-        LOGGER.debug("Added EventListener {} to {}", listener.getClass().getName(), Main.JDA.getSelfUser().getName());
     }
 
     public static void removeEventListener(ListenerAdapter listener) {
         Main.JDA.removeEventListener(listener);
-        LOGGER.debug("Removed EventListener {}", listener.getClass().getName());
     }
 }

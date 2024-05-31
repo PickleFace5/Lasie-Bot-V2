@@ -1,6 +1,10 @@
 package com.github.pickleface5.commands;
 
+import org.slf4j.LoggerFactory;
+
 import com.github.pickleface5.util.EmbedUtils;
+
+import ch.qos.logback.classic.Logger;
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.JsonNode;
 import kong.unirest.core.Unirest;
@@ -8,11 +12,10 @@ import kong.unirest.core.json.JSONObject;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class FRCCommand extends ListenerAdapter {
-    private final Logger LOGGER = LogManager.getLogger(this);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(FRCCommand.class);
+
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if (!event.getName().equals("frc")) return;
@@ -26,7 +29,7 @@ public class FRCCommand extends ListenerAdapter {
             return;
         }
 
-        LOGGER.info(receivedInfo.getBody().toString());
+        logger.info(receivedInfo.getBody().toString());
 
         // Check if team exists
         JSONObject mainObj = receivedInfo.getBody().getObject();
