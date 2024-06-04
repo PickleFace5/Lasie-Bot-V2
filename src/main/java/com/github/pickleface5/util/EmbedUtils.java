@@ -15,6 +15,9 @@ public class EmbedUtils {
             } else if (nextTitleCase) {
                 c = Character.toTitleCase(c);
                 nextTitleCase = false;
+            } else {
+                c = Character.toLowerCase(c);
+                nextTitleCase = false;
             }
             titleCase.append(c);
         }

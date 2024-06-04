@@ -7,7 +7,7 @@ import com.github.pickleface5.commands.imaging.ChadCommand;
 import com.github.pickleface5.commands.imaging.PfpGrabberCommand;
 import com.github.pickleface5.commands.music.*;
 import com.github.pickleface5.commands.robot.CreditCommand;
-import com.github.pickleface5.commands.robot.MembersCommand;
+import com.github.pickleface5.commands.robot.ServerCommand;
 import com.github.pickleface5.commands.robot.PingCommand;
 import com.github.pickleface5.commands.tictactoe.TicTacToeCommand;
 import com.github.pickleface5.logging.ServerChecker;
@@ -34,6 +34,7 @@ public class ListenerRegistry {
         // Credits
 
         // Server Stats (member count, age, owner, icon, etc)
+        slash(Commands.slash("server", "Returns information about the server."), new ServerCommand());
 
         // Account Stats (age, icon, etc)
 
@@ -44,7 +45,7 @@ public class ListenerRegistry {
 
         
         slash("credits", "Credits for Lasie Bot.", new CreditCommand());
-        slash("members", "Returns a count of members in the server.", new MembersCommand());
+        
 
         slash(Commands.slash("apex", "Returns the stats of an Apex Legends player.")
                 .addOption(OptionType.STRING, "subcommand", "Username of the Apex Legends player you want to look up.", true, true)

@@ -8,6 +8,7 @@ import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import ch.qos.logback.classic.Logger;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import java.io.File;
@@ -28,7 +29,8 @@ public class Main {
             try {
                 String token = args[0];
                 JDA = JDABuilder.createDefault(token)
-                        .enableCache(CacheFlag.VOICE_STATE)
+                        .enableCache(CacheFlag.EMOJI, CacheFlag.ROLE_TAGS, CacheFlag.STICKER, CacheFlag.VOICE_STATE)
+                        .enableIntents(GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.GUILD_VOICE_STATES)
                         .build()
                         .awaitReady();
             } catch (InterruptedException e) {
